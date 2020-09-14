@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using ToolKits.LrcData;
 
-namespace ToolKits
+namespace ToolKits.Adapter
 {
     interface ILrcAdapter
     {
