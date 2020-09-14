@@ -8,5 +8,11 @@ namespace ToolKits.LrcData
     {
         public List<LrcHeader> Headers;
         public List<LrcLine>   Lines;
+
+        public LrcObject()
+        {
+            Headers = new List<LrcHeader>();
+            Lines = new List<LrcLine>();
+        }
     }
 }

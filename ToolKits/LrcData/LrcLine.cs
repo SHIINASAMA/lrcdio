@@ -17,7 +17,7 @@ namespace ToolKits.LrcData
 
         public string FormatLrc()
         {
-            return "[" Time.Minutes + ":" + Time.Seconds + "." + Time.Milliseconds + "]" + Text;
+            return "[" + Time.Minutes + ":" + Time.Seconds + "." + Time.Milliseconds + "]" + Text;
         }
     }
 }
