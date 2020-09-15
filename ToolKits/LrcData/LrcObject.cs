@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
@@ -6,12 +7,12 @@ namespace ToolKits.LrcData
 {
     public class LrcObject
     {
-        public List<LrcHeader> Headers;
+        public Hashtable Headers;
         public List<LrcLine>   Lines;
 
         public LrcObject()
         {
-            Headers = new List<LrcHeader>();
+            Headers = new Hashtable();
             Lines = new List<LrcLine>();
         }
     }
