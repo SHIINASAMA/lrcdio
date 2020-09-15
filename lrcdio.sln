@@ -3,9 +3,14 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30503.244
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToolKits", "ToolKits\ToolKits.csproj", "{C1EC9B23-1FA9-4426-88D4-B217D3625084}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ToolKits", "ToolKits\ToolKits.csproj", "{C1EC9B23-1FA9-4426-88D4-B217D3625084}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTest", "UnitTest\UnitTest.csproj", "{A1589950-995B-4CEE-9094-73B14D0095F5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTest", "UnitTest\UnitTest.csproj", "{A1589950-995B-4CEE-9094-73B14D0095F5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0D21A348-4A4D-496B-A43A-BE1959D66D09}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
