@@ -31,7 +31,12 @@ namespace UnitTest
             Console.WriteLine("专辑是：" + lrc.Headers[LrcHeader.TagType.Al]);
             Console.WriteLine("歌名是：" + lrc.Headers[LrcHeader.TagType.Ti]);
             Console.WriteLine("Lrc编者是：" + lrc.Headers[LrcHeader.TagType.By]);
-            Console.WriteLine("补偿值是：" + lrc.Headers[LrcHeader.TagType.Offset]);        
+            Console.WriteLine("补偿值是：" + lrc.Headers[LrcHeader.TagType.Offset]);
+            lrc.Lines.Sort();
+            foreach (LrcLine line in lrc.Lines)
+            {
+                Console.WriteLine("min:{0},sec:{1},ms:{2},text:{3}", line.Time.Minutes, line.Time.Seconds, line.Time.Milliseconds, line.Text);
+            }
         }
     }
 }

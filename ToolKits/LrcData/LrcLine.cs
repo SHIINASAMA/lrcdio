@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ToolKits.LrcData
 {
-    public class LrcLine : ILrc
+    public class LrcLine : ILrc , IComparable
     {
         public TimeSpan Time;
         public string   Text;
@@ -13,6 +13,15 @@ namespace ToolKits.LrcData
         {
             this.Time = Time;
             this.Text = Text;
+        }
+
+        public int CompareTo(object obj)
+        {
+            LrcLine otherLine = obj as LrcLine;
+            if (otherLine.Time.TotalMilliseconds > Time.TotalMilliseconds)
+                return -1;
+            else
+                return 1;
         }
 
         public string FormatLrc()

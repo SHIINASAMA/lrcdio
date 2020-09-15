@@ -10,8 +10,8 @@ namespace ToolKits.Adapter
 {
     public class LrcAdapter : ILrcAdapter
     {
-        string _LrcLine1 = @"\[\d{1,2}\:\d{1,2}\.\d{2,3}\]";
-        string _LrcLine2 = @"\[\d{1,2}\:\d{1,2}\]";
+        string _LrcLine1 = @"^\[\d{1,2}\:\d{1,2}\.\d{2,3}\]";
+        string _LrcLine2 = @"^\[\d{1,2}\:\d{1,2}\]";
         string _LrcHeader = @"^\[\w{2,6}\:\w{1,}\]";
 
         /// <summary>
@@ -80,24 +80,24 @@ namespace ToolKits.Adapter
             int min;
             int sec;
             int ms;
-            // 除去两端[]
-            str = str.Substring(1, str.Length - 2);
             // 有毫秒格式
             if (Regex.IsMatch(str, _LrcLine1))
             {
+                str = str.Substring(1, str.Length - 2);
                 // 00:00.00
-                string[] temp = str.Split(':', ',');
+                string[] temp = str.Split(':', '.');
                 // temp[0] is min
                 // temp[1] is sec
                 // temp[2] is ms
-                min = Int32.Parse(temp[0]);
-                sec = Int32.Parse(temp[1]);
-                if (temp[2].Length == 2) ms = 10 * Int32.Parse(temp[2]);
-                else ms = Int32.Parse(temp[2]);
+                min = int.Parse(temp[0]);
+                sec = int.Parse(temp[1]);
+                if (temp[2].Length == 2) ms = 10 * int.Parse(temp[2]);
+                else ms = int.Parse(temp[2]);
                 return new TimeSpan(0,0,min,sec,ms);
             }
             else if(Regex.IsMatch(str, _LrcLine2))
             {
+                str = str.Substring(1, str.Length - 2);
                 string[] temp = str.Split(':');
                 // temp[0] is min
                 // temp[1] is sec
