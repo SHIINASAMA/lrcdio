@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NAudio.Wave.Compression;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Sockets;
@@ -57,8 +58,9 @@ namespace ToolKits.Adapter
         {
             using (StreamWriter writer = new StreamWriter(objectPath))
             {
-                foreach (LrcHeader header in lrcObject.Headers)
+                foreach (LrcHeader.TagType tag in lrcObject.Headers.Keys)
                 {
+                    LrcHeader header = new LrcHeader(tag,lrcObject.Headers[tag] as string);
                     writer.WriteLine(header.FormatLrc());
                 }
                 foreach (LrcLine line in lrcObject.Lines)
