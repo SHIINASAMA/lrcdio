@@ -1,7 +1,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using ToolKits.Adapter;
-using ToolKits.LrcData;
 using System;
+using LrcLib;
 
 namespace UnitTest
 {

@@ -14,7 +14,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ToolKits\ToolKits.csproj" />
+    <ProjectReference Include="..\lrclib\lrclib.csproj" />
+    <ProjectReference Include="..\NAudioPlayer\NAudioPlayer.csproj" />
   </ItemGroup>
 
 </Project>
