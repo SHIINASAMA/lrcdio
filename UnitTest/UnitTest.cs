@@ -1,13 +1,13 @@
+ï»¿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 using LrcLib;
 
 namespace UnitTest
 {
     [TestClass]
-    public class UnitTest1
+    public class UnitTest
     {
-        // ²âÊÔĞ´ÈëÄ£¿é
+        // æµ‹è¯•å†™å…¥æ¨¡å—
         [TestMethod]
         public void TestWrite()
         {
@@ -16,22 +16,22 @@ namespace UnitTest
             lrc.Lines.Add(new LrcLine(new System.TimeSpan(0, 0, 1, 2, 100), "This is a Test"));
 
             LrcAdapter adapter = new LrcAdapter();
-            adapter.WriteLrcFile(ref lrc, @"..\..\..\..\ToolKits\WriteTest.lrc");
+            adapter.WriteLrcFile(ref lrc, @"..\..\bin\WriteTest.lrc");
         }
 
-        // ²âÊÔ¶ÁÈ¡Ä£¿é
+        // æµ‹è¯•è¯»å–æ¨¡å—
         [TestMethod]
         public void TestRead()
         {
             LrcObject lrc = new LrcObject();
             LrcAdapter adapter = new LrcAdapter();
             // adapter.ReadLrcFile(ref lrc, @"..\..\..\..\ToolKits\ReadTest.lrc");
-            adapter.ReadLrcFile(ref lrc, @"E:\Download\only my railgun_¸è´Ê.lrc");
-            Console.WriteLine("¸èÊÖÊÇ£º\t" + lrc.Headers[LrcHeader.TagType.Ar]);
-            Console.WriteLine("×¨¼­ÊÇ£º\t" + lrc.Headers[LrcHeader.TagType.Al]);
-            Console.WriteLine("¸èÃûÊÇ£º\t" + lrc.Headers[LrcHeader.TagType.Ti]);
-            Console.WriteLine("Lrc±àÕßÊÇ£º\t" + lrc.Headers[LrcHeader.TagType.By]);
-            Console.WriteLine("²¹³¥ÖµÊÇ£º\t" + lrc.Headers[LrcHeader.TagType.Offset]);
+            adapter.ReadLrcFile(ref lrc, @"..\..\bin\ReadTest.lrc");
+            Console.WriteLine("æ­Œæ‰‹æ˜¯ï¼š\t" + lrc.Headers[LrcHeader.TagType.Ar]);
+            Console.WriteLine("ä¸“è¾‘æ˜¯ï¼š\t" + lrc.Headers[LrcHeader.TagType.Al]);
+            Console.WriteLine("æ­Œåæ˜¯ï¼š\t" + lrc.Headers[LrcHeader.TagType.Ti]);
+            Console.WriteLine("Lrcç¼–è€…æ˜¯ï¼š\t" + lrc.Headers[LrcHeader.TagType.By]);
+            Console.WriteLine("è¡¥å¿å€¼æ˜¯ï¼š\t" + lrc.Headers[LrcHeader.TagType.Offset]);
             lrc.Lines.Sort();
             foreach (LrcLine line in lrc.Lines)
             {
