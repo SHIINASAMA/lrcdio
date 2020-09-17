@@ -25,16 +25,17 @@ namespace UnitTest
         {
             LrcObject lrc = new LrcObject();
             LrcAdapter adapter = new LrcAdapter();
-            adapter.ReadLrcFile(ref lrc, @"..\..\..\..\ToolKits\ReadTest.lrc");
-            Console.WriteLine("歌手是：" + lrc.Headers[LrcHeader.TagType.Ar]);
-            Console.WriteLine("专辑是：" + lrc.Headers[LrcHeader.TagType.Al]);
-            Console.WriteLine("歌名是：" + lrc.Headers[LrcHeader.TagType.Ti]);
-            Console.WriteLine("Lrc编者是：" + lrc.Headers[LrcHeader.TagType.By]);
-            Console.WriteLine("补偿值是：" + lrc.Headers[LrcHeader.TagType.Offset]);
+            // adapter.ReadLrcFile(ref lrc, @"..\..\..\..\ToolKits\ReadTest.lrc");
+            adapter.ReadLrcFile(ref lrc, @"E:\Download\only my railgun_歌词.lrc");
+            Console.WriteLine("歌手是：\t" + lrc.Headers[LrcHeader.TagType.Ar]);
+            Console.WriteLine("专辑是：\t" + lrc.Headers[LrcHeader.TagType.Al]);
+            Console.WriteLine("歌名是：\t" + lrc.Headers[LrcHeader.TagType.Ti]);
+            Console.WriteLine("Lrc编者是：\t" + lrc.Headers[LrcHeader.TagType.By]);
+            Console.WriteLine("补偿值是：\t" + lrc.Headers[LrcHeader.TagType.Offset]);
             lrc.Lines.Sort();
             foreach (LrcLine line in lrc.Lines)
             {
-                Console.WriteLine("min:{0},sec:{1},ms:{2},text:{3}", line.Time.Minutes, line.Time.Seconds, line.Time.Milliseconds, line.Text);
+                Console.WriteLine("min:{0},sec:{1},ms:{2},text:{3}\t", line.Time.Minutes, line.Time.Seconds, line.Time.Milliseconds, line.Text);
             }
         }
     }
