@@ -10,9 +10,9 @@ namespace LrcLib
 {
     public class LrcAdapter : ILrcAdapter
     {
-        string _LrcLine1 = @"^\[\d{1,2}\:\d{1,2}\.\d{2,3}\]";
-        string _LrcLine2 = @"^\[\d{1,2}\:\d{1,2}\]";
-        string _LrcHeader = @"^\[\w{2,6}\:\w{1,}\]";
+        const string _LrcLine1 = @"^\[\d{1,2}\:\d{1,2}\.\d{2,3}\]";
+        const string _LrcLine2 = @"^\[\d{1,2}\:\d{1,2}\]";
+        const string _LrcHeader = @"^\[\w{2,6}\:\w{1,}\]";
 
         /// <summary>
         /// 格式化读取 Lrc 文件

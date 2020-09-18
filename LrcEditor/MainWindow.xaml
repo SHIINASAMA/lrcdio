@@ -1,0 +1,61 @@
+﻿<hc:Window x:Class="LrcEditor.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+           mc:Ignorable="d"
+        xmlns:hc="https://handyorg.github.io/handycontrol"
+        Title="Lrc Editor" Height="600" Width="800">
+    <DockPanel>
+        <Grid x:Name="MainGrid" Background="White" Height="Auto" DockPanel.Dock="Top">
+            <Grid.RowDefinitions>
+                <!--菜单-->
+                <RowDefinition Height="Auto"/>
+                <!--歌曲名称-->
+                <RowDefinition Height="Auto"/>
+                <!--进度条-->
+                <RowDefinition Height="Auto"/>
+                <!--操作面板-->
+                <RowDefinition Height="Auto"/>
+                <!--歌词编辑面板-->
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Menu Height="28" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Top">
+                <MenuItem Header="文件">
+                    <MenuItem Header="选择音频"/>
+                    <MenuItem Header="导入Lrc文件"/>
+                    <Separator/>
+                    <MenuItem Header="保存"/>
+                    <MenuItem Header="另存为..."/>
+                    <Separator/>
+                    <MenuItem Header="关闭全部"/>
+                    <MenuItem Header="退出"/>
+                </MenuItem>
+                <MenuItem Header="信息" IsEnabled="False"/>
+                <MenuItem Header="关于">
+                    <MenuItem Header="关于本软件"/>
+                    <MenuItem Header="捐赠"/>
+                </MenuItem>
+            </Menu>
+            <TextBlock Grid.Row="1" Text="请先打开音频文件" HorizontalAlignment="Center"/>
+            <Slider Grid.Row="2" Margin="50,5,50,5"/>
+            <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
+                <Label Content="00:00.000" Margin="5,0,5,0" Style="{DynamicResource LabelPrimary}" ToolTip="当前播放位置"/>
+                <Button Content="&lt;&lt;" Margin="5,0,5,0" IsEnabled="False"/>
+                <Button Content="&lt;" Margin="5,0,5,0" IsEnabled="False"/>
+                <Button Content="Play" Margin="5,0,5,0" IsEnabled="False"/>
+                <Button Content=">" Margin="5,0,5,0" IsEnabled="False"/>
+                <Button Content=">>" Margin="5,0,5,0" IsEnabled="False"/>
+                <Label Content="00:00.000" Margin="5,0,5,0" Style="{DynamicResource LabelPrimary}" ToolTip="总时长"/>
+            </StackPanel>
+        </Grid>
+        <Grid Background="White">
+            <DataGrid Margin="10" IsReadOnly="False">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="时间"/>
+                    <DataGridTextColumn Header="文本"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+    </DockPanel>
+</hc:Window>
