@@ -38,14 +38,14 @@
                 </MenuItem>
             </Menu>
             <TextBlock Grid.Row="1" Text="请先打开音频文件" HorizontalAlignment="Center" Name="AudioName"/>
-            <Slider Grid.Row="2" Margin="50,5,50,5" IsEnabled="False" Name="AudioProgress" Minimum="0"/>
+            <Slider Grid.Row="2" Margin="50,5,50,5" IsEnabled="False" Name="AudioProgress" Minimum="0" MouseDown="AudioProgress_MouseDown" MouseUp="AudioProgress_MouseUp"/>
             <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
                 <Label Content="00:00.000" Margin="5,0,5,0" Style="{DynamicResource LabelPrimary}" ToolTip="当前播放位置" Name="Time"/>
-                <Button Content="&lt;&lt;" Margin="5,0,5,0" IsEnabled="False" Name="LLStep" Click="LLStep_Click"/>
-                <Button Content="&lt;" Margin="5,0,5,0" IsEnabled="False" Name="LStep" Click="LStep_Click"/>
+                <Button Content="&lt;&lt;" Margin="5,0,5,0" IsEnabled="False" Name="LLStep" Click="LLStep_Click" ToolTip="后退200毫秒"/>
+                <Button Content="&lt;" Margin="5,0,5,0" IsEnabled="False" Name="LStep" Click="LStep_Click" ToolTip="后退100毫秒"/>
                 <Button Content="Play" Margin="5,0,5,0" IsEnabled="False" Name="Pause" Click="Pause_Click"/>
-                <Button Content=">" Margin="5,0,5,0" IsEnabled="False" Name="RStep" Click="RStep_Click"/>
-                <Button Content=">>" Margin="5,0,5,0" IsEnabled="False" Name="RRStep" Click="RRStep_Click"/>
+                <Button Content=">" Margin="5,0,5,0" IsEnabled="False" Name="RStep" Click="RStep_Click" ToolTip="前进100毫秒"/>
+                <Button Content=">>" Margin="5,0,5,0" IsEnabled="False" Name="RRStep" Click="RRStep_Click" ToolTip="前进200毫秒"/>
                 <Label Content="00:00.000" Margin="5,0,5,0" Style="{DynamicResource LabelPrimary}" ToolTip="总时长" Name="TotalTime"/>
             </StackPanel>
         </Grid>

@@ -29,12 +29,17 @@ namespace LrcEditor
         string AudioPath;
         string LrcPath;
         Timer Timer = new Timer();
+        bool IsChanging = false;
 
         public MainWindow()
         {
             InitializeComponent();
+
             Timer.Interval = 100;
             Timer.Tick += Timer_Tick;
+
+            AudioProgress.AddHandler(Slider.MouseDownEvent, new RoutedEventHandler(AudioProgress_MouseDown), true);
+            AudioProgress.AddHandler(Slider.MouseUpEvent, new RoutedEventHandler(AudioProgress_MouseUp), true);
         }
 
         private void Timer_Tick(object sender, EventArgs e)
@@ -42,6 +47,7 @@ namespace LrcEditor
             Dispatcher.BeginInvoke(new Action(()=> 
             {
                 SetProgress(Player.CurrentTime);
+                IsEnd();
             }));
         }
 
@@ -73,6 +79,7 @@ namespace LrcEditor
                 RStep.IsEnabled = true;
                 RRStep.IsEnabled = true;
                 TotalTime.Content = Time2String(Player.TotalTime);
+                Pause.Content = "Play";
                 Timer.Start();
             }
         }
@@ -136,17 +143,17 @@ namespace LrcEditor
 
         private void Pause_Click(object sender, RoutedEventArgs e)
         {
+            if (Pause.Content == "Replay") Player.CurrentTime = TimeSpan.Zero;
+
             if (!Player.IsPlaying)
             {
                 Pause.Content = "Pause";
                 Player.Play();
-                Timer.Start();
             }
             else
             {
                 Pause.Content = "Play";
                 Player.Pause();
-                Timer.Stop();
             }
         }
 
@@ -186,13 +193,50 @@ namespace LrcEditor
 
         private void SetProgress(TimeSpan time)
         {
-            Time.Content = Time2String(time);
-            AudioProgress.Value = time.TotalSeconds;
+            if (IsChanging)
+            {
+                Time.Content = Time2String(new TimeSpan(0, 0,(int)AudioProgress.Value));
+            }
+            else
+            {
+                Time.Content = Time2String(time);
+                AudioProgress.Value = time.TotalSeconds;
+            }
+        }
+
+        private void IsEnd()
+        {
+            if (Time.Content.ToString() == TotalTime.Content.ToString()) 
+            {
+                Player.Pause();
+                Pause.Content = "Replay";
+            }
         }
 
         private string Time2String(TimeSpan time)
         {
-            return time.Minutes + ":" + time.Seconds + "." + time.Milliseconds;
+            string min = time.Minutes.ToString();
+            if (min.Length == 1) min = "0" + min;
+
+            string sec = time.Seconds.ToString();
+            if (sec.Length == 1) sec = "0" + sec;
+
+            string ms = time.Milliseconds.ToString();
+            if (ms.Length == 1) ms = "00" + ms;
+            else if (ms.Length == 2) ms = "0" + ms;
+
+            return min + ":" + sec + "." + ms;
+        }
+
+        private void AudioProgress_MouseDown(object sender, RoutedEventArgs e)
+        {
+            IsChanging = true;
+        }
+
+        private void AudioProgress_MouseUp(object sender, RoutedEventArgs e)
+        {
+            IsChanging = false;
+            Player.CurrentTime = new TimeSpan(0, 0, (int)AudioProgress.Value);
         }
     }
 }

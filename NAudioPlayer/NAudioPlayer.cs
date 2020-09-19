@@ -91,16 +91,16 @@ namespace NAudioPlayer
 
         private void WavePlayer_PlaybackStopped(object sender, StoppedEventArgs e)
         {
-            if (audioFileReader != null)
-            {
-                audioFileReader.Dispose();
-                audioFileReader = null;
-            }
-            if (wavePlayer != null)
-            {
-                wavePlayer.Dispose();
-                wavePlayer = null;
-            }
+            //if (audioFileReader != null)
+            //{
+            //    audioFileReader.Dispose();
+            //    audioFileReader = null;
+            //}
+            //if (wavePlayer != null)
+            //{
+            //    wavePlayer.Dispose();
+            //    wavePlayer = null;
+            //}
 
             isPlaying = false;
         }
@@ -165,7 +165,9 @@ namespace NAudioPlayer
             isPlaying = true;
         }
 
-        //暂停
+        /// <summary>
+        /// 暂停
+        /// </summary>
         public void Pause()
         {
             if (wavePlayer != null)
