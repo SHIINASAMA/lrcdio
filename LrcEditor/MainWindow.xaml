@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
            mc:Ignorable="d"
         xmlns:hc="https://handyorg.github.io/handycontrol"
-        Title="Lrc Editor" Height="600" Width="800">
+        Title="Lrc Editor" Height="600" Width="800" Closing="Window_Closing">
     <DockPanel>
         <Grid x:Name="MainGrid" Background="White" Height="Auto" DockPanel.Dock="Top">
             <Grid.RowDefinitions>
@@ -22,40 +22,54 @@
             </Grid.RowDefinitions>
             <Menu Height="28" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Top">
                 <MenuItem Header="文件">
-                    <MenuItem Header="选择音频"/>
-                    <MenuItem Header="导入Lrc文件"/>
+                    <MenuItem Header="选择音频" Name="SelectAudio" Click="SelectAudio_Click"/>
+                    <MenuItem Header="导入Lrc文件" Name="InputLrc" Click="InputLrc_Click"/>
                     <Separator/>
-                    <MenuItem Header="保存"/>
-                    <MenuItem Header="另存为..."/>
+                    <MenuItem Header="保存" Name="Save" Click="Save_Click"/>
+                    <MenuItem Header="另存为..." Name="SaveAs" Click="SaveAs_Click"/>
                     <Separator/>
-                    <MenuItem Header="关闭全部"/>
-                    <MenuItem Header="退出"/>
+                    <MenuItem Header="关闭全部" Name="CloseAll" Click="CloseAll_Click"/>
+                    <MenuItem Header="退出" Name="Exit" Click="Exit_Click"/>
                 </MenuItem>
-                <MenuItem Header="信息" IsEnabled="False"/>
+                <MenuItem Header="信息" IsEnabled="False" Name="SetInfo" Click="SetInfo_Click"/>
                 <MenuItem Header="关于">
-                    <MenuItem Header="关于本软件"/>
-                    <MenuItem Header="捐赠"/>
+                    <MenuItem Header="关于本软件" Name="AboutSoftwave" Click="AboutSoftwave_Click"/>
+                    <MenuItem Header="捐赠" Name="Donate" Click="Donate_Click"/>
                 </MenuItem>
             </Menu>
-            <TextBlock Grid.Row="1" Text="请先打开音频文件" HorizontalAlignment="Center"/>
-            <Slider Grid.Row="2" Margin="50,5,50,5"/>
+            <TextBlock Grid.Row="1" Text="请先打开音频文件" HorizontalAlignment="Center" Name="AudioName"/>
+            <Slider Grid.Row="2" Margin="50,5,50,5" IsEnabled="False" Name="AudioProgress" Minimum="0"/>
             <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
-                <Label Content="00:00.000" Margin="5,0,5,0" Style="{DynamicResource LabelPrimary}" ToolTip="当前播放位置"/>
-                <Button Content="&lt;&lt;" Margin="5,0,5,0" IsEnabled="False"/>
-                <Button Content="&lt;" Margin="5,0,5,0" IsEnabled="False"/>
-                <Button Content="Play" Margin="5,0,5,0" IsEnabled="False"/>
-                <Button Content=">" Margin="5,0,5,0" IsEnabled="False"/>
-                <Button Content=">>" Margin="5,0,5,0" IsEnabled="False"/>
-                <Label Content="00:00.000" Margin="5,0,5,0" Style="{DynamicResource LabelPrimary}" ToolTip="总时长"/>
+                <Label Content="00:00.000" Margin="5,0,5,0" Style="{DynamicResource LabelPrimary}" ToolTip="当前播放位置" Name="Time"/>
+                <Button Content="&lt;&lt;" Margin="5,0,5,0" IsEnabled="False" Name="LLStep" Click="LLStep_Click"/>
+                <Button Content="&lt;" Margin="5,0,5,0" IsEnabled="False" Name="LStep" Click="LStep_Click"/>
+                <Button Content="Play" Margin="5,0,5,0" IsEnabled="False" Name="Pause" Click="Pause_Click"/>
+                <Button Content=">" Margin="5,0,5,0" IsEnabled="False" Name="RStep" Click="RStep_Click"/>
+                <Button Content=">>" Margin="5,0,5,0" IsEnabled="False" Name="RRStep" Click="RRStep_Click"/>
+                <Label Content="00:00.000" Margin="5,0,5,0" Style="{DynamicResource LabelPrimary}" ToolTip="总时长" Name="TotalTime"/>
             </StackPanel>
         </Grid>
         <Grid Background="White">
-            <DataGrid Margin="10" IsReadOnly="False">
+            <Grid.ColumnDefinitions>
+                <!--编辑器主界面-->
+                <ColumnDefinition/>
+                <!--编辑器控制面板-->
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <DataGrid Grid.Column="0" Margin="5" Name="DataView">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="时间"/>
-                    <DataGridTextColumn Header="文本"/>
+                    <DataGridTextColumn Header="时间" IsReadOnly="False" Width="Auto"/>
+                    <DataGridTextColumn Header="文本" IsReadOnly="False" Width="Auto"/>
                 </DataGrid.Columns>
             </DataGrid>
+            <StackPanel Grid.Column="1" Orientation="Vertical" Width="50" Background="White">
+                <Button Margin="5" Name="AddBtn" Click="AddBtn_Click">
+                    <Image Source="Resources/add.png"/>
+                </Button>
+                <Button Margin="5" Name="RmBtn" Click="RmBtn_Click">
+                    <Image Source="Resources/rm.png"/>
+                </Button>
+            </StackPanel>
         </Grid>
     </DockPanel>
 </hc:Window>

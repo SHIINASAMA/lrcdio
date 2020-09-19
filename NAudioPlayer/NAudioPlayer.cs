@@ -1,7 +1,7 @@
 ﻿using System;
 using NAudio.Wave;
 
-namespace ToolKits
+namespace NAudioPlayer
 {
     public class NAudioPlayer
     {
