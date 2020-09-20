@@ -16,6 +16,7 @@ using MessageBox = HandyControl.Controls.MessageBox;
 using System.Windows.Forms;
 using NAudioPlayer;
 using Player = NAudioPlayer.NAudioPlayer;
+using Window = HandyControl.Controls.Window;
 using System.Diagnostics;
 
 namespace LrcEditor
@@ -23,7 +24,7 @@ namespace LrcEditor
     /// <summary>
     /// MainWindow.xaml 的交互逻辑
     /// </summary>
-    public partial class MainWindow : HandyControl.Controls.Window
+    public partial class MainWindow : Window
     {
         Player Player = new Player();
         string AudioPath;
@@ -133,70 +134,27 @@ namespace LrcEditor
 
         private void LLStep_Click(object sender, RoutedEventArgs e)
         {
-            TimeSpan temp = new TimeSpan(0, 0, 0, 0, 200);
-            if (Player.CurrentTime - temp < TimeSpan.Zero)
-            {
-                Player.CurrentTime = TimeSpan.Zero;
-            }
-            else
-            {
-                Player.CurrentTime -= temp;
-            }
+            LLStepFunc();
         }
 
         private void LStep_Click(object sender, RoutedEventArgs e)
         {
-            TimeSpan temp = new TimeSpan(0, 0, 0, 0, 100);
-            if (Player.CurrentTime - temp < TimeSpan.Zero)
-            {
-                Player.CurrentTime = TimeSpan.Zero;
-            }
-            else
-            {
-                Player.CurrentTime -= temp;
-            }
+            LStepFunc();
         }
 
         private void Pause_Click(object sender, RoutedEventArgs e)
         {
-            if (Pause.Content.ToString() == "Replay") Player.CurrentTime = TimeSpan.Zero;
-
-            if (!Player.IsPlaying)
-            {
-                Pause.Content = "Pause";
-                Player.Play();
-            }
-            else
-            {
-                Pause.Content = "Play";
-                Player.Pause();
-            }
+            PlayFunc();
         }
 
         private void RStep_Click(object sender, RoutedEventArgs e)
         {
-            TimeSpan temp = new TimeSpan(0, 0, 0, 0, 100);
-            if(Player.CurrentTime + temp >= Player.TotalTime)
-            {
-                Player.CurrentTime = Player.TotalTime;
-            }
-            else
-            {
-                Player.CurrentTime += temp;
-            }
+            RStepFunc();
         }
 
         private void RRStep_Click(object sender, RoutedEventArgs e)
         {
-            TimeSpan temp = new TimeSpan(0, 0, 0, 0, 200);
-            if (Player.CurrentTime + temp >= Player.TotalTime)
-            {
-                Player.CurrentTime = Player.TotalTime;
-            }
-            else
-            {
-                Player.CurrentTime += temp;
-            }
+            RRStepFunc();
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -269,6 +227,100 @@ namespace LrcEditor
         {
             IsChanging = false;
             Player.CurrentTime = new TimeSpan(0, 0, (int)AudioProgress.Value);
+        }
+
+        private void Window_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            // MessageBox.Show(e.Key.ToString());
+            if (Pause.IsEnabled && e.KeyboardDevice.Modifiers == ModifierKeys.Control)
+            {
+                switch (e.Key)
+                {
+                    case Key.OemQuestion:
+                        PlayFunc();
+                        break;
+                    case Key.OemComma:
+                        LStepFunc();
+                        break;
+                    case Key.OemPeriod:
+                        RStepFunc();
+                        break;
+                    case Key.Oem4:
+                        LLStepFunc();
+                        break;
+                    case Key.Oem6:
+                        RRStepFunc();
+                        break;
+                }
+            }
+        }
+
+        private void PlayFunc()
+        {
+            if (Pause.Content.ToString() == "Replay") Player.CurrentTime = TimeSpan.Zero;
+
+            if (!Player.IsPlaying)
+            {
+                Pause.Content = "Pause";
+                Player.Play();
+            }
+            else
+            {
+                Pause.Content = "Play";
+                Player.Pause();
+            }
+        }
+
+        private void LLStepFunc()
+        {
+            TimeSpan temp = new TimeSpan(0, 0, 0, 0, 200);
+            if (Player.CurrentTime - temp < TimeSpan.Zero)
+            {
+                Player.CurrentTime = TimeSpan.Zero;
+            }
+            else
+            {
+                Player.CurrentTime -= temp;
+            }
+        }
+
+        private void LStepFunc()
+        {
+            TimeSpan temp = new TimeSpan(0, 0, 0, 0, 100);
+            if (Player.CurrentTime - temp < TimeSpan.Zero)
+            {
+                Player.CurrentTime = TimeSpan.Zero;
+            }
+            else
+            {
+                Player.CurrentTime -= temp;
+            }
+        }
+
+        private void RRStepFunc()
+        {
+            TimeSpan temp = new TimeSpan(0, 0, 0, 0, 200);
+            if (Player.CurrentTime + temp >= Player.TotalTime)
+            {
+                Player.CurrentTime = Player.TotalTime;
+            }
+            else
+            {
+                Player.CurrentTime += temp;
+            }
+        }
+
+        private void RStepFunc()
+        {
+            TimeSpan temp = new TimeSpan(0, 0, 0, 0, 100);
+            if (Player.CurrentTime + temp >= Player.TotalTime)
+            {
+                Player.CurrentTime = Player.TotalTime;
+            }
+            else
+            {
+                Player.CurrentTime += temp;
+            }
         }
     }
 }
