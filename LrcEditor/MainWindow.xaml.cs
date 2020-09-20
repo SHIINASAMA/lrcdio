@@ -133,17 +133,33 @@ namespace LrcEditor
 
         private void LLStep_Click(object sender, RoutedEventArgs e)
         {
-
+            TimeSpan temp = new TimeSpan(0, 0, 0, 0, 200);
+            if (Player.CurrentTime - temp < TimeSpan.Zero)
+            {
+                Player.CurrentTime = TimeSpan.Zero;
+            }
+            else
+            {
+                Player.CurrentTime -= temp;
+            }
         }
 
         private void LStep_Click(object sender, RoutedEventArgs e)
         {
-
+            TimeSpan temp = new TimeSpan(0, 0, 0, 0, 100);
+            if (Player.CurrentTime - temp < TimeSpan.Zero)
+            {
+                Player.CurrentTime = TimeSpan.Zero;
+            }
+            else
+            {
+                Player.CurrentTime -= temp;
+            }
         }
 
         private void Pause_Click(object sender, RoutedEventArgs e)
         {
-            if (Pause.Content == "Replay") Player.CurrentTime = TimeSpan.Zero;
+            if (Pause.Content.ToString() == "Replay") Player.CurrentTime = TimeSpan.Zero;
 
             if (!Player.IsPlaying)
             {
@@ -159,12 +175,28 @@ namespace LrcEditor
 
         private void RStep_Click(object sender, RoutedEventArgs e)
         {
-
+            TimeSpan temp = new TimeSpan(0, 0, 0, 0, 100);
+            if(Player.CurrentTime + temp >= Player.TotalTime)
+            {
+                Player.CurrentTime = Player.TotalTime;
+            }
+            else
+            {
+                Player.CurrentTime += temp;
+            }
         }
 
         private void RRStep_Click(object sender, RoutedEventArgs e)
         {
-
+            TimeSpan temp = new TimeSpan(0, 0, 0, 0, 200);
+            if (Player.CurrentTime + temp >= Player.TotalTime)
+            {
+                Player.CurrentTime = Player.TotalTime;
+            }
+            else
+            {
+                Player.CurrentTime += temp;
+            }
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
