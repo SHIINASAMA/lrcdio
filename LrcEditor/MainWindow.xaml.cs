@@ -52,6 +52,7 @@ namespace LrcEditor
             }));
         }
 
+        #region 菜单响应
         private void SelectAudio_Click(object sender, RoutedEventArgs e)
         {
             // 选择文件
@@ -73,12 +74,7 @@ namespace LrcEditor
                 AudioName.Text = dlg.FileName;
                 AudioProgress.Maximum = Player.TotalTime.TotalSeconds;
                 AudioProgress.Value = 0;
-                AudioProgress.IsEnabled = true;
-                LLStep.IsEnabled = true;
-                LStep.IsEnabled = true;
-                Pause.IsEnabled = true;
-                RStep.IsEnabled = true;
-                RRStep.IsEnabled = true;
+                SetPanalUsable(true);
                 TotalTime.Content = Time2String(Player.TotalTime);
                 Pause.Content = "Play";
                 Timer.Start();
@@ -109,7 +105,10 @@ namespace LrcEditor
 
         private void CloseAll_Click(object sender, RoutedEventArgs e)
         {
-
+            SetPanalUsable(false);
+            Title = "Lrc Editor";
+            AudioName.Text = "请先打开音频文件";
+            DataView.Items.Clear();
         }
 
         private void Exit_Click(object sender, RoutedEventArgs e)
@@ -131,15 +130,18 @@ namespace LrcEditor
         {
 
         }
-
+        #endregion
+        #region 音频控制面板响应
         private void LLStep_Click(object sender, RoutedEventArgs e)
         {
-            LLStepFunc();
+            // LLStepFunc();
+            SetStep(-200);
         }
 
         private void LStep_Click(object sender, RoutedEventArgs e)
         {
-            LStepFunc();
+            // LStepFunc();
+            SetStep(-100);
         }
 
         private void Pause_Click(object sender, RoutedEventArgs e)
@@ -149,12 +151,14 @@ namespace LrcEditor
 
         private void RStep_Click(object sender, RoutedEventArgs e)
         {
-            RStepFunc();
+            // RStepFunc();
+            SetStep(100);
         }
 
         private void RRStep_Click(object sender, RoutedEventArgs e)
         {
-            RRStepFunc();
+            // RRStepFunc();
+            SetStep(200);
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -180,6 +184,7 @@ namespace LrcEditor
         {
 
         }
+        #endregion
 
         private void SetProgress(TimeSpan time)
         {
@@ -201,21 +206,6 @@ namespace LrcEditor
                 Player.Pause();
                 Pause.Content = "Replay";
             }
-        }
-
-        private string Time2String(TimeSpan time)
-        {
-            string min = time.Minutes.ToString();
-            if (min.Length == 1) min = "0" + min;
-
-            string sec = time.Seconds.ToString();
-            if (sec.Length == 1) sec = "0" + sec;
-
-            string ms = time.Milliseconds.ToString();
-            if (ms.Length == 1) ms = "00" + ms;
-            else if (ms.Length == 2) ms = "0" + ms;
-
-            return min + ":" + sec + "." + ms;
         }
 
         private void AudioProgress_MouseDown(object sender, RoutedEventArgs e)
@@ -255,6 +245,7 @@ namespace LrcEditor
             }
         }
 
+        #region 通用方法
         private void PlayFunc()
         {
             if (Pause.Content.ToString() == "Replay") Player.CurrentTime = TimeSpan.Zero;
@@ -322,5 +313,64 @@ namespace LrcEditor
                 Player.CurrentTime += temp;
             }
         }
+
+        private void SetStep(int ms)
+        {
+            bool IsAdd = true;
+            if(ms < 0)
+            {
+                IsAdd = false;
+                ms *= -1;
+            }
+            TimeSpan temp = new TimeSpan(0, 0, 0, 0, ms);
+            if (IsAdd)
+            {
+                if(Player.CurrentTime + temp >= Player.TotalTime)
+                {
+                    Player.CurrentTime = Player.TotalTime;
+                }
+                else 
+                {
+                    Player.CurrentTime += temp;
+                }
+            }
+            else
+            {
+                if(Player.CurrentTime - temp <= TimeSpan.Zero)
+                {
+                    Player.CurrentTime = TimeSpan.Zero;
+                }
+                else
+                {
+                    Player.CurrentTime -= temp;
+                }
+            }
+        }
+
+        private string Time2String(TimeSpan time)
+        {
+            string min = time.Minutes.ToString();
+            if (min.Length == 1) min = "0" + min;
+
+            string sec = time.Seconds.ToString();
+            if (sec.Length == 1) sec = "0" + sec;
+
+            string ms = time.Milliseconds.ToString();
+            if (ms.Length == 1) ms = "00" + ms;
+            else if (ms.Length == 2) ms = "0" + ms;
+
+            return min + ":" + sec + "." + ms;
+        }
+
+        private void SetPanalUsable(bool b)
+        {
+            LLStep.IsEnabled = LStep.IsEnabled = Pause.IsEnabled = RStep.IsEnabled = RRStep.IsEnabled = AudioProgress.IsEnabled = b;
+            if (!b && Player.IsPlaying)
+            {
+                Player.Pause();
+                Time.Content = TotalTime.Content = "00:00.000";
+            }
+        }
+        #endregion
     }
 }
