@@ -6,11 +6,12 @@
         xmlns:local="clr-namespace:LrcEditor"
         mc:Ignorable="d"
         xmlns:hc="https://handyorg.github.io/handycontrol"
-        Title="Info" Height="266.418" Width="390.299">
-    <Grid>
+        Title="Info" Height="243" Width="438.5" ResizeMode="NoResize">
+    <Grid Margin="35,10,10,9.5">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="112*"/>
+            <ColumnDefinition Width="85*"/>
+            <ColumnDefinition Width="191*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition/>
@@ -19,17 +20,19 @@
             <RowDefinition/>
             <RowDefinition/>
             <RowDefinition/>
+            <RowDefinition/>
         </Grid.RowDefinitions>
-        <TextBlock Text="修改信息" Grid.Row="0" Grid.Column="0"/>
-        <TextBlock Text="艺术家（AR）" Grid.Row="1" Grid.Column="0"/>
-        <TextBlock Text="曲名（TI）" Grid.Row="2" Grid.Column="0"/>
-        <TextBlock Text="专辑名（AL）" Grid.Row="3" Grid.Column="0"/>
-        <TextBlock Text="编者（BY）" Grid.Row="4" Grid.Column="0"/>
-        <TextBlock Text="时间补偿（OFFSET）" Grid.Row="5" Grid.Column="0"/>
-        <TextBox Grid.Row="1" Grid.Column="1" Width="200"/>
-        <TextBox Grid.Row="2" Grid.Column="1" Width="200"/>
-        <TextBox Grid.Row="3" Grid.Column="1" Width="200"/>
-        <TextBox Grid.Row="4" Grid.Column="1" Width="200"/>
-        <TextBox Grid.Row="5" Grid.Column="1" Width="200"/>
+        <TextBlock Text="修改信息" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,0,29,0"/>
+        <TextBlock Text="艺术家（AR）" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,0,29,27" Grid.RowSpan="2"/>
+        <TextBlock Text="曲名（TI）" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,27,29,0" Grid.RowSpan="2"/>
+        <TextBlock Text="专辑名（AL）" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,0,29,27" Grid.RowSpan="2"/>
+        <TextBlock Text="编者（BY）" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,0,29,26.5" Grid.RowSpan="2"/>
+        <TextBlock Text="时间补偿（OFFSET）" Grid.Row="5" Grid.Column="0" Margin="0,0,29,27" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
+        <TextBox Grid.Row="1" Grid.Column="1" Margin="0,0,-4.5,26" Grid.ColumnSpan="2" Grid.RowSpan="2" Name="ARTextBox"/>
+        <TextBox Grid.Row="1" Grid.Column="1" Margin="0,27,-4.5,26" Grid.ColumnSpan="2" Grid.RowSpan="3" Name="TITextBox"/>
+        <TextBox Grid.Row="3" Grid.Column="1" Margin="0,0,-4.5,25" Grid.ColumnSpan="2" Grid.RowSpan="2" Name="ALTextBox"/>
+        <TextBox Grid.Row="4" Grid.Column="1" Margin="0,0,-4.5,24.5" Grid.ColumnSpan="2" Grid.RowSpan="2" Name="BYTextBox"/>
+        <TextBox Grid.Row="5" Grid.Column="1" Margin="0,0,-4.5,25" Grid.ColumnSpan="2" Grid.RowSpan="2" Name="OFFSETTextBox"/>
+        <Button Grid.Row="6" Grid.Column="2" Content="保存" RenderTransformOrigin="0.533,0.467" Margin="139,0.5,-4.5,-3" Width="56" Name="Save" Click="Save_Click"/>
     </Grid>
 </hc:Window>
