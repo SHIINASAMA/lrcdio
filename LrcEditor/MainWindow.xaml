@@ -26,7 +26,7 @@
                     <MenuItem Header="导入Lrc文件" Name="InputLrc" Click="InputLrc_Click"/>
                     <Separator/>
                     <MenuItem Header="保存" Name="Save" Click="Save_Click"/>
-                    <MenuItem Header="另存为..." Name="SaveAs" Click="SaveAs_Click"/>
+                    <MenuItem Header="另存为..." Name="SaveAs" Click="SaveAs_Click" IsEnabled="False"/>
                     <Separator/>
                     <MenuItem Header="关闭全部" Name="CloseAll" Click="CloseAll_Click"/>
                     <MenuItem Header="退出" Name="Exit" Click="Exit_Click"/>
@@ -56,13 +56,12 @@
                 <!--编辑器控制面板-->
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <DataGrid Grid.Column="0" Margin="5" Name="DataView">
+            <DataGrid Grid.Column="0" Margin="5" Name="DataView" CanUserReorderColumns="True">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="时间" IsReadOnly="False" Width="Auto"/>
-                    <DataGridTextColumn Header="文本" IsReadOnly="False" Width="Auto"/>
+                    
                 </DataGrid.Columns>
             </DataGrid>
-            <StackPanel Grid.Column="1" Orientation="Vertical" Width="50" Background="White">
+            <StackPanel Grid.Column="1" Orientation="Vertical" Width="50" Background="White" >
                 <Button Margin="5" Name="AddBtn" Click="AddBtn_Click">
                     <Image Source="Resources/add.png"/>
                 </Button>

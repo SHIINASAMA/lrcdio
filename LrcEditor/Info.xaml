@@ -1,0 +1,35 @@
+﻿<hc:Window x:Class="LrcEditor.Info"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:LrcEditor"
+        mc:Ignorable="d"
+        xmlns:hc="https://handyorg.github.io/handycontrol"
+        Title="Info" Height="266.418" Width="390.299">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <TextBlock Text="修改信息" Grid.Row="0" Grid.Column="0"/>
+        <TextBlock Text="艺术家（AR）" Grid.Row="1" Grid.Column="0"/>
+        <TextBlock Text="曲名（TI）" Grid.Row="2" Grid.Column="0"/>
+        <TextBlock Text="专辑名（AL）" Grid.Row="3" Grid.Column="0"/>
+        <TextBlock Text="编者（BY）" Grid.Row="4" Grid.Column="0"/>
+        <TextBlock Text="时间补偿（OFFSET）" Grid.Row="5" Grid.Column="0"/>
+        <TextBox Grid.Row="1" Grid.Column="1" Width="200"/>
+        <TextBox Grid.Row="2" Grid.Column="1" Width="200"/>
+        <TextBox Grid.Row="3" Grid.Column="1" Width="200"/>
+        <TextBox Grid.Row="4" Grid.Column="1" Width="200"/>
+        <TextBox Grid.Row="5" Grid.Column="1" Width="200"/>
+    </Grid>
+</hc:Window>

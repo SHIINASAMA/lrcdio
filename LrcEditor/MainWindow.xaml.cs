@@ -18,6 +18,10 @@ using NAudioPlayer;
 using Player = NAudioPlayer.NAudioPlayer;
 using Window = HandyControl.Controls.Window;
 using System.Diagnostics;
+using System.Collections.ObjectModel;
+using System.Dynamic;
+using System.Data;
+using LrcLib;
 
 namespace LrcEditor
 {
@@ -31,6 +35,8 @@ namespace LrcEditor
         string LrcPath;
         Timer Timer = new Timer();
         bool IsChanging = false;
+        LrcObject Lrc;
+        DataTable dt = new DataTable();
 
         public MainWindow()
         {
@@ -41,6 +47,11 @@ namespace LrcEditor
 
             AudioProgress.AddHandler(Slider.MouseDownEvent, new RoutedEventHandler(AudioProgress_MouseDown), true);
             AudioProgress.AddHandler(Slider.MouseUpEvent, new RoutedEventHandler(AudioProgress_MouseUp), true);
+
+            dt.Columns.Add(new DataColumn("时间"));
+            dt.Columns.Add(new DataColumn("文本"));
+
+            DataView.ItemsSource = dt.DefaultView;
         }
 
         private void Timer_Tick(object sender, EventArgs e)
@@ -88,9 +99,24 @@ namespace LrcEditor
             dlg.Filter = "Lrc|*.lrc|Text|*.txt|所有文件|*.*";
             if (dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                AudioPath = dlg.FileName;
+                LrcPath = dlg.FileName;
                 Title = "Lrc Editor - " + dlg.FileName;
             }
+
+            Lrc = new LrcObject();
+            LrcAdapter adapter = new LrcAdapter();
+            adapter.ReadLrcFile(ref Lrc,LrcPath);
+
+            DataRow dr = null;
+            foreach(LrcLine line in Lrc.Lines)
+            {
+                dr = dt.NewRow();
+                dr[0] = Time2String(line.Time);
+                dr[1] = line.Text;
+                dt.Rows.Add(dr);
+            }
+
+            SetInfo.IsEnabled = true;
         }
 
         private void Save_Click(object sender, RoutedEventArgs e)
@@ -108,7 +134,9 @@ namespace LrcEditor
             SetPanalUsable(false);
             Title = "Lrc Editor";
             AudioName.Text = "请先打开音频文件";
-            DataView.Items.Clear();
+            dt.Rows.Clear();
+            LrcPath = null;
+            AudioPath = null;
         }
 
         private void Exit_Click(object sender, RoutedEventArgs e)
@@ -118,7 +146,8 @@ namespace LrcEditor
 
         private void SetInfo_Click(object sender, RoutedEventArgs e)
         {
-
+            Info info = new Info();
+            info.ShowDialog();
         }
 
         private void AboutSoftwave_Click(object sender, RoutedEventArgs e)
@@ -130,6 +159,7 @@ namespace LrcEditor
         {
 
         }
+
         #endregion
         #region 音频控制面板响应
         private void LLStep_Click(object sender, RoutedEventArgs e)
@@ -164,7 +194,7 @@ namespace LrcEditor
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             MessageBoxResult result;
-            result = MessageBox.Show("您确定要退出吗？（自动保存）\n", "提示", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            result = MessageBox.Show("您确定要退出吗？", "提示", MessageBoxButton.YesNo, MessageBoxImage.Question);
             if (result == MessageBoxResult.Yes)
             {
                 // TODO: 这里做保存工作
@@ -230,16 +260,20 @@ namespace LrcEditor
                         PlayFunc();
                         break;
                     case Key.OemComma:
-                        LStepFunc();
+                        SetStep(-100);
+                        // LStepFunc();
                         break;
                     case Key.OemPeriod:
-                        RStepFunc();
+                        SetStep(10);
+                        // RStepFunc();
                         break;
                     case Key.Oem4:
-                        LLStepFunc();
+                        SetStep(-200);
+                        // LLStepFunc();
                         break;
                     case Key.Oem6:
-                        RRStepFunc();
+                        SetStep(200);
+                        // RRStepFunc();
                         break;
                 }
             }
@@ -262,57 +296,57 @@ namespace LrcEditor
             }
         }
 
-        private void LLStepFunc()
-        {
-            TimeSpan temp = new TimeSpan(0, 0, 0, 0, 200);
-            if (Player.CurrentTime - temp < TimeSpan.Zero)
-            {
-                Player.CurrentTime = TimeSpan.Zero;
-            }
-            else
-            {
-                Player.CurrentTime -= temp;
-            }
-        }
+        //private void LLStepFunc()
+        //{
+        //    TimeSpan temp = new TimeSpan(0, 0, 0, 0, 200);
+        //    if (Player.CurrentTime - temp < TimeSpan.Zero)
+        //    {
+        //        Player.CurrentTime = TimeSpan.Zero;
+        //    }
+        //    else
+        //    {
+        //        Player.CurrentTime -= temp;
+        //    }
+        //}
 
-        private void LStepFunc()
-        {
-            TimeSpan temp = new TimeSpan(0, 0, 0, 0, 100);
-            if (Player.CurrentTime - temp < TimeSpan.Zero)
-            {
-                Player.CurrentTime = TimeSpan.Zero;
-            }
-            else
-            {
-                Player.CurrentTime -= temp;
-            }
-        }
+        //private void LStepFunc()
+        //{
+        //    TimeSpan temp = new TimeSpan(0, 0, 0, 0, 100);
+        //    if (Player.CurrentTime - temp < TimeSpan.Zero)
+        //    {
+        //        Player.CurrentTime = TimeSpan.Zero;
+        //    }
+        //    else
+        //    {
+        //        Player.CurrentTime -= temp;
+        //    }
+        //}
 
-        private void RRStepFunc()
-        {
-            TimeSpan temp = new TimeSpan(0, 0, 0, 0, 200);
-            if (Player.CurrentTime + temp >= Player.TotalTime)
-            {
-                Player.CurrentTime = Player.TotalTime;
-            }
-            else
-            {
-                Player.CurrentTime += temp;
-            }
-        }
+        //private void RRStepFunc()
+        //{
+        //    TimeSpan temp = new TimeSpan(0, 0, 0, 0, 200);
+        //    if (Player.CurrentTime + temp >= Player.TotalTime)
+        //    {
+        //        Player.CurrentTime = Player.TotalTime;
+        //    }
+        //    else
+        //    {
+        //        Player.CurrentTime += temp;
+        //    }
+        //}
 
-        private void RStepFunc()
-        {
-            TimeSpan temp = new TimeSpan(0, 0, 0, 0, 100);
-            if (Player.CurrentTime + temp >= Player.TotalTime)
-            {
-                Player.CurrentTime = Player.TotalTime;
-            }
-            else
-            {
-                Player.CurrentTime += temp;
-            }
-        }
+        //private void RStepFunc()
+        //{
+        //    TimeSpan temp = new TimeSpan(0, 0, 0, 0, 100);
+        //    if (Player.CurrentTime + temp >= Player.TotalTime)
+        //    {
+        //        Player.CurrentTime = Player.TotalTime;
+        //    }
+        //    else
+        //    {
+        //        Player.CurrentTime += temp;
+        //    }
+        //}
 
         private void SetStep(int ms)
         {
