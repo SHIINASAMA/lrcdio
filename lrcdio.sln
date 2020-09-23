@@ -3,12 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30503.244
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NAudioPlayer", "NAudioPlayer\NAudioPlayer.csproj", "{19D005E1-9935-46DA-BC29-1E8AD196F5F7}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LrcLib", "LrcLib\LrcLib.csproj", "{3423589C-F6D6-40E4-9829-18A4A970750D}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTest", "UnitTest\UnitTest.csproj", "{71C66E9E-6252-4285-976A-F21249C3673F}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{43D902C6-7AA9-4035-92B0-E260F612F4B8}"
 	ProjectSection(SolutionItems) = preProject
 		bin\ReadTest.lrc = bin\ReadTest.lrc
@@ -23,18 +17,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{19D005E1-9935-46DA-BC29-1E8AD196F5F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{19D005E1-9935-46DA-BC29-1E8AD196F5F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{19D005E1-9935-46DA-BC29-1E8AD196F5F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{19D005E1-9935-46DA-BC29-1E8AD196F5F7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3423589C-F6D6-40E4-9829-18A4A970750D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3423589C-F6D6-40E4-9829-18A4A970750D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3423589C-F6D6-40E4-9829-18A4A970750D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3423589C-F6D6-40E4-9829-18A4A970750D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{71C66E9E-6252-4285-976A-F21249C3673F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{71C66E9E-6252-4285-976A-F21249C3673F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{71C66E9E-6252-4285-976A-F21249C3673F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{71C66E9E-6252-4285-976A-F21249C3673F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A0F9A804-BFFA-49BE-AD1E-3A842873925C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A0F9A804-BFFA-49BE-AD1E-3A842873925C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A0F9A804-BFFA-49BE-AD1E-3A842873925C}.Release|Any CPU.ActiveCfg = Release|Any CPU
