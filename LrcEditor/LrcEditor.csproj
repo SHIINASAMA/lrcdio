@@ -106,16 +106,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\LrcLib\LrcLib.csproj">
-      <Project>{3423589c-f6d6-40e4-9829-18a4a970750d}</Project>
-      <Name>LrcLib</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NAudioPlayer\NAudioPlayer.csproj">
-      <Project>{19d005e1-9935-46da-bc29-1e8ad196f5f7}</Project>
-      <Name>NAudioPlayer</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Resources\add.png" />
     <Resource Include="Resources\rm.png" />
   </ItemGroup>
