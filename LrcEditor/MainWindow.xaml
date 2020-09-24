@@ -56,7 +56,7 @@
                 <!--编辑器控制面板-->
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <DataGrid Grid.Column="0" Margin="5" Name="DataView" CanUserReorderColumns="True">
+            <DataGrid Grid.Column="0" Margin="5" Name="DataView" CanUserReorderColumns="True" AlternationCount="2">
                 <DataGrid.Columns>
                     
                 </DataGrid.Columns>

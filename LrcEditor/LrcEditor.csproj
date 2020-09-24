@@ -109,5 +109,15 @@
     <Resource Include="Resources\add.png" />
     <Resource Include="Resources\rm.png" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LrcLib\LrcLib.csproj">
+      <Project>{48dfdb12-489c-4f60-9619-fa0027fec55a}</Project>
+      <Name>LrcLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NAudioPlayer\NAudioPlayer.csproj">
+      <Project>{8f0db4ae-d87e-4bb1-9863-4400793376c0}</Project>
+      <Name>NAudioPlayer</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

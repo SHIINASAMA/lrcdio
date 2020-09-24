@@ -21,7 +21,8 @@ using System.Diagnostics;
 using System.Collections.ObjectModel;
 using System.Dynamic;
 using System.Data;
-using LrcLib;
+using LrcLib.LrcData;
+using LrcLib.LrcAdapter;
 
 namespace LrcEditor
 {
@@ -50,8 +51,8 @@ namespace LrcEditor
 
             dt.Columns.Add(new DataColumn("时间"));
             dt.Columns.Add(new DataColumn("文本"));
-
             DataView.ItemsSource = dt.DefaultView;
+            DataView.ColumnWidth = DataGridLength.SizeToCells;
         }
 
         private void Timer_Tick(object sender, EventArgs e)
@@ -74,7 +75,7 @@ namespace LrcEditor
                 AudioPath = dlg.FileName;
                 try
                 {
-                    Player.Init(dlg.FileName);
+                    Player.Load(dlg.FileName);
                 }
                 catch (Exception ex)
                 {
@@ -104,11 +105,10 @@ namespace LrcEditor
             }
 
             Lrc = new LrcObject();
-            LrcAdapter adapter = new LrcAdapter();
-            adapter.ReadLrcFile(ref Lrc,LrcPath);
+            LrcAdapter.ReadFromFile(ref Lrc,LrcPath);
 
             DataRow dr = null;
-            foreach(LrcLine line in Lrc.Lines)
+            foreach(LrcLine line in Lrc.LrcLines)
             {
                 dr = dt.NewRow();
                 dr[0] = Time2String(line.Time);
@@ -146,8 +146,8 @@ namespace LrcEditor
 
         private void SetInfo_Click(object sender, RoutedEventArgs e)
         {
-            Info info = new Info();
-            info.ShowDialog();
+            //Info info = new Info();
+            //info.ShowDialog();
         }
 
         private void AboutSoftwave_Click(object sender, RoutedEventArgs e)
@@ -164,14 +164,12 @@ namespace LrcEditor
         #region 音频控制面板响应
         private void LLStep_Click(object sender, RoutedEventArgs e)
         {
-            // LLStepFunc();
-            SetStep(-200);
+            Player.Jump(-200);
         }
 
         private void LStep_Click(object sender, RoutedEventArgs e)
         {
-            // LStepFunc();
-            SetStep(-100);
+            Player.Jump(-100);
         }
 
         private void Pause_Click(object sender, RoutedEventArgs e)
@@ -181,14 +179,12 @@ namespace LrcEditor
 
         private void RStep_Click(object sender, RoutedEventArgs e)
         {
-            // RStepFunc();
-            SetStep(100);
+            Player.Jump(100);
         }
 
         private void RRStep_Click(object sender, RoutedEventArgs e)
         {
-            // RRStepFunc();
-            SetStep(200);
+            Player.Jump(200);
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -295,58 +291,6 @@ namespace LrcEditor
                 Player.Pause();
             }
         }
-
-        //private void LLStepFunc()
-        //{
-        //    TimeSpan temp = new TimeSpan(0, 0, 0, 0, 200);
-        //    if (Player.CurrentTime - temp < TimeSpan.Zero)
-        //    {
-        //        Player.CurrentTime = TimeSpan.Zero;
-        //    }
-        //    else
-        //    {
-        //        Player.CurrentTime -= temp;
-        //    }
-        //}
-
-        //private void LStepFunc()
-        //{
-        //    TimeSpan temp = new TimeSpan(0, 0, 0, 0, 100);
-        //    if (Player.CurrentTime - temp < TimeSpan.Zero)
-        //    {
-        //        Player.CurrentTime = TimeSpan.Zero;
-        //    }
-        //    else
-        //    {
-        //        Player.CurrentTime -= temp;
-        //    }
-        //}
-
-        //private void RRStepFunc()
-        //{
-        //    TimeSpan temp = new TimeSpan(0, 0, 0, 0, 200);
-        //    if (Player.CurrentTime + temp >= Player.TotalTime)
-        //    {
-        //        Player.CurrentTime = Player.TotalTime;
-        //    }
-        //    else
-        //    {
-        //        Player.CurrentTime += temp;
-        //    }
-        //}
-
-        //private void RStepFunc()
-        //{
-        //    TimeSpan temp = new TimeSpan(0, 0, 0, 0, 100);
-        //    if (Player.CurrentTime + temp >= Player.TotalTime)
-        //    {
-        //        Player.CurrentTime = Player.TotalTime;
-        //    }
-        //    else
-        //    {
-        //        Player.CurrentTime += temp;
-        //    }
-        //}
 
         private void SetStep(int ms)
         {

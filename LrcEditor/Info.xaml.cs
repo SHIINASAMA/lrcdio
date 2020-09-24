@@ -23,12 +23,9 @@ namespace LrcEditor
     {
         public Hashtable LrcHeaders;
 
-        public Info(ref Hashtable hashtable)
+        public Info()
         {
-            LrcHeaders = hashtable;
-            InitializeComponent();
-
-            string ar = (string)hashtable[LrcHeader.TagType.Ar];
+            
         }
 
         private void Save_Click(object sender, RoutedEventArgs e)
@@ -38,12 +35,6 @@ namespace LrcEditor
             if (BYTextBox.Text == null) BYTextBox.Text = "NULL";
             if (TITextBox.Text == null) TITextBox.Text = "NULL";
             if (OFFSETTextBox.Text == null) OFFSETTextBox.Text = "NULL";
-
-            LrcHeaders.Add(LrcHeader.TagType.Ar, ARTextBox.Text);
-            LrcHeaders.Add(LrcHeader.TagType.Al, ALTextBox.Text);
-            LrcHeaders.Add(LrcHeader.TagType.By, BYTextBox.Text);
-            LrcHeaders.Add(LrcHeader.TagType.Ti, TITextBox.Text);
-            LrcHeaders.Add(LrcHeader.TagType.Offset, OFFSETTextBox.Text);
         }
     }
 }

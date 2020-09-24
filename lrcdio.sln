@@ -11,6 +11,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LrcEditor", "LrcEditor\LrcEditor.csproj", "{A0F9A804-BFFA-49BE-AD1E-3A842873925C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LrcLib", "LrcLib\LrcLib.csproj", "{48DFDB12-489C-4F60-9619-FA0027FEC55A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NAudioPlayer", "NAudioPlayer\NAudioPlayer.csproj", "{8F0DB4AE-D87E-4BB1-9863-4400793376C0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{A0F9A804-BFFA-49BE-AD1E-3A842873925C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A0F9A804-BFFA-49BE-AD1E-3A842873925C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A0F9A804-BFFA-49BE-AD1E-3A842873925C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{48DFDB12-489C-4F60-9619-FA0027FEC55A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48DFDB12-489C-4F60-9619-FA0027FEC55A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48DFDB12-489C-4F60-9619-FA0027FEC55A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{48DFDB12-489C-4F60-9619-FA0027FEC55A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F0DB4AE-D87E-4BB1-9863-4400793376C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F0DB4AE-D87E-4BB1-9863-4400793376C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F0DB4AE-D87E-4BB1-9863-4400793376C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F0DB4AE-D87E-4BB1-9863-4400793376C0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
