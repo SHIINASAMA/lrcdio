@@ -1,25 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using HandyControl.Controls;
 using MessageBox = HandyControl.Controls.MessageBox;
 using System.Windows.Forms;
-using NAudioPlayer;
 using Player = NAudioPlayer.NAudioPlayer;
 using Window = HandyControl.Controls.Window;
-using System.Diagnostics;
-using System.Collections.ObjectModel;
-using System.Dynamic;
 using System.Data;
 using LrcLib.LrcData;
 using LrcLib.LrcAdapter;
@@ -201,15 +187,6 @@ namespace LrcEditor
             }
         }
 
-        private void RmBtn_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void AddBtn_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
         #endregion
 
         private void SetProgress(TimeSpan time)
@@ -245,6 +222,7 @@ namespace LrcEditor
             Player.CurrentTime = new TimeSpan(0, 0, (int)AudioProgress.Value);
         }
 
+        // 快捷键响应
         private void Window_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
             // MessageBox.Show(e.Key.ToString());
@@ -273,7 +251,35 @@ namespace LrcEditor
                         break;
                 }
             }
+            if(ModifierKeys.Control == e.KeyboardDevice.Modifiers)
+            {
+                switch(e.Key)
+                {
+                    case Key.T:
+                        SetTime();
+                        break;
+                    case Key.OemPlus:
+                        AddItem();
+                        break;
+                    case Key.OemMinus:
+                        DelItem();
+                        break;
+                }
+            }
         }
+
+        #region DataView响应
+        private void RmBtn_Click(object sender, RoutedEventArgs e)
+        {
+            DelItem();
+        }
+
+        private void AddBtn_Click(object sender, RoutedEventArgs e)
+        {
+            AddItem();
+        }
+
+        #endregion
 
         #region 通用方法
         private void PlayFunc()
@@ -295,7 +301,7 @@ namespace LrcEditor
         private void SetStep(int ms)
         {
             bool IsAdd = true;
-            if(ms < 0)
+            if (ms < 0)
             {
                 IsAdd = false;
                 ms *= -1;
@@ -303,18 +309,18 @@ namespace LrcEditor
             TimeSpan temp = new TimeSpan(0, 0, 0, 0, ms);
             if (IsAdd)
             {
-                if(Player.CurrentTime + temp >= Player.TotalTime)
+                if (Player.CurrentTime + temp >= Player.TotalTime)
                 {
                     Player.CurrentTime = Player.TotalTime;
                 }
-                else 
+                else
                 {
                     Player.CurrentTime += temp;
                 }
             }
             else
             {
-                if(Player.CurrentTime - temp <= TimeSpan.Zero)
+                if (Player.CurrentTime - temp <= TimeSpan.Zero)
                 {
                     Player.CurrentTime = TimeSpan.Zero;
                 }
@@ -342,12 +348,49 @@ namespace LrcEditor
 
         private void SetPanalUsable(bool b)
         {
-            LLStep.IsEnabled = LStep.IsEnabled = Pause.IsEnabled = RStep.IsEnabled = RRStep.IsEnabled = AudioProgress.IsEnabled = b;
+            LLStep.IsEnabled = LStep.IsEnabled = Pause.IsEnabled = RStep.IsEnabled = RRStep.IsEnabled = AudioProgress.IsEnabled = SetInfo.IsEnabled = b;
             if (!b && Player.IsPlaying)
             {
                 Player.Pause();
                 Time.Content = TotalTime.Content = "00:00.000";
             }
+        }
+
+        private void DelItem()
+        {
+            if (DataView.SelectedIndex == -1 && DataView.Items.Count != 0)
+            {
+                dt.Rows.RemoveAt(DataView.Items.Count - 1);
+            }
+            else if (DataView.SelectedIndex != -1)
+            {
+                dt.Rows.RemoveAt(DataView.SelectedIndex);
+            }
+        }
+
+        private void AddItem()
+        {
+            DataRow dr;
+            dr = dt.NewRow();
+            dr[0] = Time.Content;
+            if (DataView.SelectedIndex == -1)
+            {
+                dt.Rows.Add(dr);
+                DataView.SelectedIndex = DataView.Items.Count - 1;
+                DataView.ScrollIntoView(DataView.SelectedItem);
+            }
+            else
+            {
+                dt.Rows.InsertAt(dr, DataView.SelectedIndex + 1);
+                ++DataView.SelectedIndex;
+                DataView.ScrollIntoView(DataView.SelectedItem);
+            }
+        }
+
+        private void SetTime()
+        {
+            if (DataView.SelectedIndex == -1) return;
+            dt.Rows[DataView.SelectedIndex][0] = Time.Content;
         }
         #endregion
     }
