@@ -22,7 +22,7 @@ namespace LrcEditor
         string LrcPath;
         Timer Timer = new Timer();
         bool IsChanging = false;
-        LrcObject Lrc;
+        LrcHeader[] LrcHeaders = new LrcHeader[5];
         DataTable dt = new DataTable();
 
         public MainWindow()
@@ -90,7 +90,7 @@ namespace LrcEditor
                 Title = "Lrc Editor - " + dlg.FileName;
             }
 
-            Lrc = new LrcObject();
+            LrcObject Lrc = new LrcObject();
             LrcAdapter.ReadFromFile(ref Lrc,LrcPath);
 
             DataRow dr = null;
@@ -132,8 +132,11 @@ namespace LrcEditor
 
         private void SetInfo_Click(object sender, RoutedEventArgs e)
         {
-            //Info info = new Info();
-            //info.ShowDialog();
+            InfoWindow infoWindow = new InfoWindow(LrcHeaders);
+            if ((bool)infoWindow.ShowDialog())
+            {
+                LrcHeaders = infoWindow.Headers;
+            }
         }
 
         private void AboutSoftwave_Click(object sender, RoutedEventArgs e)
