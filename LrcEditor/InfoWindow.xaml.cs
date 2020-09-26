@@ -39,6 +39,11 @@ namespace LrcEditor
 
         private void SaveBtn_Click(object sender, RoutedEventArgs e)
         {
+            Headers[(int)LrcHeader.Type.AR] = new LrcHeader(LrcHeader.Type.AR, ArTextBox.Text);
+            Headers[(int)LrcHeader.Type.TI] = new LrcHeader(LrcHeader.Type.TI, TiTextBox.Text);
+            Headers[(int)LrcHeader.Type.AL] = new LrcHeader(LrcHeader.Type.AL, AlTextBox.Text);
+            Headers[(int)LrcHeader.Type.BY] = new LrcHeader(LrcHeader.Type.BY, ByTextBox.Text);
+            Headers[(int)LrcHeader.Type.OFFSET] = new LrcHeader(LrcHeader.Type.OFFSET, OffsetTextBox.Text);
             DialogResult = true;
         }
 

@@ -9,6 +9,9 @@ using Window = HandyControl.Controls.Window;
 using System.Data;
 using LrcLib.LrcData;
 using LrcLib.LrcAdapter;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
+using System.Text;
 
 namespace LrcEditor
 {
@@ -39,6 +42,12 @@ namespace LrcEditor
             dt.Columns.Add(new DataColumn("文本"));
             DataView.ItemsSource = dt.DefaultView;
             DataView.ColumnWidth = DataGridLength.SizeToCells;
+
+            LrcHeaders[(int)LrcHeader.Type.AR] = new LrcHeader(LrcHeader.Type.AR, "AR");
+            LrcHeaders[(int)LrcHeader.Type.TI] = new LrcHeader(LrcHeader.Type.TI, "TI");
+            LrcHeaders[(int)LrcHeader.Type.AL] = new LrcHeader(LrcHeader.Type.AL, "AL");
+            LrcHeaders[(int)LrcHeader.Type.BY] = new LrcHeader(LrcHeader.Type.BY, "BY");
+            LrcHeaders[(int)LrcHeader.Type.OFFSET] = new LrcHeader(LrcHeader.Type.OFFSET, "OFFSET");
         }
 
         private void Timer_Tick(object sender, EventArgs e)
@@ -88,26 +97,26 @@ namespace LrcEditor
             {
                 LrcPath = dlg.FileName;
                 Title = "Lrc Editor - " + dlg.FileName;
+                LrcObject Lrc = new LrcObject();
+                LrcAdapter.ReadFromFile(ref Lrc, LrcPath);
+                LrcHeaders = Lrc.LrcHeaders;
+
+                DataRow dr = null;
+                foreach (LrcLine line in Lrc.LrcLines)
+                {
+                    dr = dt.NewRow();
+                    dr[0] = Time2String(line.Time);
+                    dr[1] = line.Text;
+                    dt.Rows.Add(dr);
+                }
+
+                SetInfo.IsEnabled = true;
             }
-
-            LrcObject Lrc = new LrcObject();
-            LrcAdapter.ReadFromFile(ref Lrc,LrcPath);
-
-            DataRow dr = null;
-            foreach(LrcLine line in Lrc.LrcLines)
-            {
-                dr = dt.NewRow();
-                dr[0] = Time2String(line.Time);
-                dr[1] = line.Text;
-                dt.Rows.Add(dr);
-            }
-
-            SetInfo.IsEnabled = true;
         }
 
         private void Save_Click(object sender, RoutedEventArgs e)
         {
-
+            SaveFunc();
         }
 
         private void SaveAs_Click(object sender, RoutedEventArgs e)
@@ -237,19 +246,23 @@ namespace LrcEditor
                         PlayFunc();
                         break;
                     case Key.OemComma:
-                        SetStep(-100);
+                        Player.Jump(-100);
+                        //SetStep(-100);
                         // LStepFunc();
                         break;
                     case Key.OemPeriod:
-                        SetStep(10);
+                        Player.Jump(100);
+                        //SetStep(100);
                         // RStepFunc();
                         break;
                     case Key.Oem4:
-                        SetStep(-200);
+                        Player.Jump(-200);
+                        //SetStep(-200);
                         // LLStepFunc();
                         break;
                     case Key.Oem6:
-                        SetStep(200);
+                        Player.Jump(200);
+                        //SetStep(200);
                         // RRStepFunc();
                         break;
                 }
@@ -266,6 +279,9 @@ namespace LrcEditor
                         break;
                     case Key.OemMinus:
                         DelItem();
+                        break;
+                    case Key.S:
+                        SaveFunc();
                         break;
                 }
             }
@@ -301,39 +317,7 @@ namespace LrcEditor
             }
         }
 
-        private void SetStep(int ms)
-        {
-            bool IsAdd = true;
-            if (ms < 0)
-            {
-                IsAdd = false;
-                ms *= -1;
-            }
-            TimeSpan temp = new TimeSpan(0, 0, 0, 0, ms);
-            if (IsAdd)
-            {
-                if (Player.CurrentTime + temp >= Player.TotalTime)
-                {
-                    Player.CurrentTime = Player.TotalTime;
-                }
-                else
-                {
-                    Player.CurrentTime += temp;
-                }
-            }
-            else
-            {
-                if (Player.CurrentTime - temp <= TimeSpan.Zero)
-                {
-                    Player.CurrentTime = TimeSpan.Zero;
-                }
-                else
-                {
-                    Player.CurrentTime -= temp;
-                }
-            }
-        }
-
+  
         private string Time2String(TimeSpan time)
         {
             string min = time.Minutes.ToString();
@@ -351,7 +335,7 @@ namespace LrcEditor
 
         private void SetPanalUsable(bool b)
         {
-            LLStep.IsEnabled = LStep.IsEnabled = Pause.IsEnabled = RStep.IsEnabled = RRStep.IsEnabled = AudioProgress.IsEnabled = SetInfo.IsEnabled = b;
+            LLStep.IsEnabled = LStep.IsEnabled = Pause.IsEnabled = RStep.IsEnabled = RRStep.IsEnabled = AudioProgress.IsEnabled = b;
             if (!b && Player.IsPlaying)
             {
                 Player.Pause();
@@ -394,6 +378,78 @@ namespace LrcEditor
         {
             if (DataView.SelectedIndex == -1) return;
             dt.Rows[DataView.SelectedIndex][0] = Time.Content;
+        }
+
+        private void FormatSaveFunc(string path)
+        {
+            // if (DataView.Items.Count == 0) return;
+            List<LrcLine> Lines = new List<LrcLine>();
+            foreach(DataRow dr in dt.Rows)
+            {
+                Lines.Add(LrcLine.Pause("[" + dr[0] + "]" + dr[1])[0]);
+            }
+
+            LrcObject lrc = new LrcObject();
+            lrc.LrcHeaders = this.LrcHeaders;
+            lrc.LrcLines = Lines;
+            LrcAdapter.WriteToFile(ref lrc, path);
+        }
+
+        private int CheckTimeFormat()
+        {
+            int index = 0;
+            foreach(DataRow dr in dt.Rows)
+            {
+                if (!Regex.IsMatch((string)dr[0], @"(\d{ 1,2}\:\d{ 1,2}\.\d{ 2,3})| (\d{ 1,2}\:\d{ 1,2})"))
+                {
+                    return index;
+                }
+                ++index;
+            }
+            return -1;
+        }
+
+        private void SaveFunc()
+        {
+            if (DataView.Items.Count == 0)
+            {
+                MessageBox.Show("内容不能为空", "警告", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+            //int i = CheckTimeFormat();
+            //if (i >= 0)
+            //{
+            //    DataView.SelectedIndex = i;
+            //    DataView.ScrollIntoView(DataView.SelectedItem);
+            //    MessageBox.Show("时间格式错误", "警告", MessageBoxButton.OK, MessageBoxImage.Warning);
+            //    return;
+            //}
+            if (LrcPath == null)
+            {
+                SaveFileDialog dlg = new SaveFileDialog();
+                dlg.Filter = "LRC文件|*.Lrc|文本文件|*.txt";
+                if (dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
+                    LrcPath = dlg.FileName;
+                    FormatSaveFunc(LrcPath);
+                    Title = "Lrc Edit -" + LrcPath;
+                }
+            }
+            else
+            {
+                int a = CheckTimeFormat();
+                //if (a >= 0)
+                //{
+                //    DataView.SelectedIndex = a;
+                //    DataView.ScrollIntoView(DataView.SelectedItem);
+                //    MessageBox.Show("时间格式错误", "警告", MessageBoxButton.OK, MessageBoxImage.Warning);
+                //    return;
+                //}
+                //else
+                //{
+                    FormatSaveFunc(LrcPath);
+                //e}
+            }
         }
         #endregion
     }

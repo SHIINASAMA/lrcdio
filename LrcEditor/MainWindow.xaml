@@ -31,7 +31,7 @@
                     <MenuItem Header="关闭全部" Name="CloseAll" Click="CloseAll_Click"/>
                     <MenuItem Header="退出" Name="Exit" Click="Exit_Click"/>
                 </MenuItem>
-                <MenuItem Header="信息" IsEnabled="False" Name="SetInfo" Click="SetInfo_Click"/>
+                <MenuItem Header="信息" Name="SetInfo" Click="SetInfo_Click"/>
                 <MenuItem Header="关于">
                     <MenuItem Header="关于本软件" Name="AboutSoftwave" Click="AboutSoftwave_Click"/>
                     <MenuItem Header="捐赠" Name="Donate" Click="Donate_Click"/>
