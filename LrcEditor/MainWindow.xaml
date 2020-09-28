@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-           mc:Ignorable="d"
+        mc:Ignorable="d"
         xmlns:hc="https://handyorg.github.io/handycontrol"
         Title="Lrc Editor" Height="600" Width="800" Closing="Window_Closing" PreviewKeyDown="Window_PreviewKeyDown">
     <DockPanel>
@@ -32,10 +32,7 @@
                     <MenuItem Header="退出" Name="Exit" Click="Exit_Click"/>
                 </MenuItem>
                 <MenuItem Header="信息" Name="SetInfo" Click="SetInfo_Click"/>
-                <MenuItem Header="关于">
-                    <MenuItem Header="关于本软件" Name="AboutSoftwave" Click="AboutSoftwave_Click"/>
-                    <MenuItem Header="捐赠" Name="Donate" Click="Donate_Click"/>
-                </MenuItem>
+                <MenuItem Header="关于" Name="About" Click="About_Click"/>
             </Menu>
             <TextBlock Grid.Row="1" Text="请先打开音频文件" HorizontalAlignment="Center" Name="AudioName"/>
             <Slider Grid.Row="2" Margin="50,5,50,5" IsEnabled="False" Name="AudioProgress" Minimum="0" MouseDown="AudioProgress_MouseDown" MouseUp="AudioProgress_MouseUp"/>

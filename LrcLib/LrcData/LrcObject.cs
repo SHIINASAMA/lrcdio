@@ -17,7 +17,7 @@ namespace LrcLib.LrcData
             LrcHeaders[(int)LrcHeader.Type.TI] = new LrcHeader(LrcHeader.Type.TI, "TI");
             LrcHeaders[(int)LrcHeader.Type.AL] = new LrcHeader(LrcHeader.Type.AL, "AL");
             LrcHeaders[(int)LrcHeader.Type.BY] = new LrcHeader(LrcHeader.Type.BY, "BY");
-            LrcHeaders[(int)LrcHeader.Type.OFFSET] = new LrcHeader(LrcHeader.Type.OFFSET, "OFFSET");
+            LrcHeaders[(int)LrcHeader.Type.OFFSET] = new LrcHeader(LrcHeader.Type.OFFSET, "0");
         }
     }
 }

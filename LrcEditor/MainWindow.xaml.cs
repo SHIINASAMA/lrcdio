@@ -23,8 +23,10 @@ namespace LrcEditor
         Player Player = new Player();
         string AudioPath;
         string LrcPath;
+
         Timer Timer = new Timer();
         bool IsChanging = false;
+
         LrcHeader[] LrcHeaders = new LrcHeader[5];
         DataTable dt = new DataTable();
 
@@ -50,16 +52,13 @@ namespace LrcEditor
             LrcHeaders[(int)LrcHeader.Type.OFFSET] = new LrcHeader(LrcHeader.Type.OFFSET, "OFFSET");
         }
 
-        private void Timer_Tick(object sender, EventArgs e)
+        #region 菜单响应
+        private void About_Click(object sender, RoutedEventArgs e)
         {
-            Dispatcher.BeginInvoke(new Action(()=> 
-            {
-                SetProgress(Player.CurrentTime);
-                IsEnd();
-            }));
+            AboutWindow window = new AboutWindow();
+            window.ShowDialog();
         }
 
-        #region 菜单响应
         private void SelectAudio_Click(object sender, RoutedEventArgs e)
         {
             // 选择文件
@@ -136,7 +135,17 @@ namespace LrcEditor
 
         private void Exit_Click(object sender, RoutedEventArgs e)
         {
-
+            MessageBoxResult result;
+            result = MessageBox.Show("您确定要退出吗？", "提示", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (result == MessageBoxResult.Yes)
+            {
+                // TODO: 这里做保存工作
+                Close();
+            }
+            else
+            {
+                return;
+            }
         }
 
         private void SetInfo_Click(object sender, RoutedEventArgs e)
@@ -146,16 +155,6 @@ namespace LrcEditor
             {
                 LrcHeaders = infoWindow.Headers;
             }
-        }
-
-        private void AboutSoftwave_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void Donate_Click(object sender, RoutedEventArgs e)
-        {
-
         }
 
         #endregion
@@ -184,6 +183,29 @@ namespace LrcEditor
         {
             Player.Jump(200);
         }
+        #endregion
+        #region 其他
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                SetProgress(Player.CurrentTime);
+                IsEnd();
+            }));
+        }
+
+        private void SetProgress(TimeSpan time)
+        {
+            if (IsChanging)
+            {
+                Time.Content = Time2String(new TimeSpan(0, 0,(int)AudioProgress.Value));
+            }
+            else
+            {
+                Time.Content = Time2String(time);
+                AudioProgress.Value = time.TotalSeconds;
+            }
+        }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
@@ -196,21 +218,6 @@ namespace LrcEditor
             else
             {
                 e.Cancel = true;
-            }
-        }
-
-        #endregion
-
-        private void SetProgress(TimeSpan time)
-        {
-            if (IsChanging)
-            {
-                Time.Content = Time2String(new TimeSpan(0, 0,(int)AudioProgress.Value));
-            }
-            else
-            {
-                Time.Content = Time2String(time);
-                AudioProgress.Value = time.TotalSeconds;
             }
         }
 
@@ -286,7 +293,7 @@ namespace LrcEditor
                 }
             }
         }
-
+        #endregion
         #region DataView响应
         private void RmBtn_Click(object sender, RoutedEventArgs e)
         {
@@ -299,7 +306,6 @@ namespace LrcEditor
         }
 
         #endregion
-
         #region 通用方法
         private void PlayFunc()
         {
@@ -316,7 +322,6 @@ namespace LrcEditor
                 Player.Pause();
             }
         }
-
   
         private string Time2String(TimeSpan time)
         {

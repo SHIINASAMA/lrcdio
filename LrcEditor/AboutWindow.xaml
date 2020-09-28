@@ -1,0 +1,22 @@
+﻿<hc:Window x:Class="LrcEditor.AboutWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:LrcEditor"
+        mc:Ignorable="d"
+        xmlns:hc="https://handyorg.github.io/handycontrol"
+        Title="AboutWindow" Height="300" Width="450">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="5*"/>
+        </Grid.ColumnDefinitions>
+        <hc:SideMenu Grid.Column="0" AutoSelect="True">
+            <hc:SideMenuItem Header="关于" Name="About" Selected="About_Selected" IsSelected="True"/>
+            <hc:SideMenuItem Header="依赖" Name="Depend" Selected="Depend_Selected"/>
+            <hc:SideMenuItem Header="捐赠" Name="Donate" Selected="Donate_Selected"/>
+        </hc:SideMenu>
+        <TextBlock Grid.Column="1"/>
+    </Grid>
+</hc:Window>
