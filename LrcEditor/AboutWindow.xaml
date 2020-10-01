@@ -18,5 +18,49 @@
             <hc:SideMenuItem Header="捐赠" Name="Donate" Selected="Donate_Selected"/>
         </hc:SideMenu>
         <TextBlock Grid.Column="1"/>
+        <Grid Grid.Column="1" Name="AboutView" Visibility="Visible">
+            <StackPanel>
+                <TextBlock Text="Lrc Editor" HorizontalAlignment="Center" FontSize="30"/>
+                <TextBlock HorizontalAlignment="Center" FontSize="20">
+                    <Hyperlink NavigateUri="https://github.com/SHIINASAMA/lrcdio" 
+                               Name="GitLink" Click="GitLink_Click">项目仓库地址</Hyperlink>
+                </TextBlock>
+                <TextBlock HorizontalAlignment="Center" FontSize="20">
+                    <Hyperlink NavigateUri="https://github.com/SHIINASAMA"
+                               Name="Maker" Click="Maker_Click">开发人员</Hyperlink>
+                </TextBlock>
+                <TextBlock HorizontalAlignment="Center" FontSize="20">
+                    <Hyperlink NavigateUri="https://github.com/SHIINASAMA/lrcdio/blob/master/LICENSE"
+                               Name="License" Click="License_Click">源代码许可协议</Hyperlink>
+                </TextBlock>
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Column="1" Name="DependView" Visibility="Hidden">
+            <StackPanel>
+                <TextBlock HorizontalAlignment="Center" FontSize="30" Text="依赖项"/>
+                <TextBlock HorizontalAlignment="Center" FontSize="20">
+                    <Hyperlink NavigateUri="https://github.com/naudio/NAudio"
+                               Name="NAudio" Click="NAudio_Click">NAudio</Hyperlink>
+                </TextBlock>
+                <TextBlock HorizontalAlignment="Center" FontSize="20">
+                    <Hyperlink NavigateUri="https://github.com/SHIINASAMA/NAudioPlayer"
+                               Name="NAudioPlayer" Click="NAudioPlayer_Click">NAudioPlayer</Hyperlink>
+                </TextBlock>
+                <TextBlock HorizontalAlignment="Center" FontSize="20">
+                    <Hyperlink NavigateUri="https://github.com/SHIINASAMA/LrcLib"
+                               Name="LrcLib" Click="LrcLib_Click">LrcLib</Hyperlink>
+                </TextBlock>
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Column="1" Name="DonateView" Visibility="Hidden">
+            <Grid Margin="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Image Grid.Column="0" Source="Resources/alipay.jpg" Stretch="Uniform"/>
+                <Image Grid.Column="1" Source="Resources/wechatpay.png" Stretch="Uniform"/>
+            </Grid>
+        </Grid>
     </Grid>
 </hc:Window>

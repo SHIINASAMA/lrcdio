@@ -126,5 +126,11 @@
       <Name>NAudioPlayer</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\alipay.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\wechatpay.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
