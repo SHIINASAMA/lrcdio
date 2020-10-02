@@ -66,6 +66,10 @@ namespace LrcEditor
             Process.Start(NAudioPlayer.NavigateUri.ToString());
         }
 
+        private void HandyControl_Click(object sender, RoutedEventArgs e)
+        {
+            Process.Start(HandyControl.NavigateUri.ToString());
+        }
         private void LrcLib_Click(object sender, RoutedEventArgs e)
         {
             Process.Start(LrcLib.NavigateUri.ToString());

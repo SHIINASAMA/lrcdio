@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:LrcEditor"
         mc:Ignorable="d"
         xmlns:hc="https://handyorg.github.io/handycontrol"
-        Title="AboutWindow" Height="300" Width="450">
+        Height="300" Width="450" Title="关于" ShowInTaskbar="False" ResizeMode="NoResize" WindowStartupLocation="CenterOwner">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
@@ -49,6 +49,10 @@
                 <TextBlock HorizontalAlignment="Center" FontSize="20">
                     <Hyperlink NavigateUri="https://github.com/SHIINASAMA/LrcLib"
                                Name="LrcLib" Click="LrcLib_Click">LrcLib</Hyperlink>
+                </TextBlock>
+                <TextBlock HorizontalAlignment="Center" FontSize="20">
+                    <Hyperlink NavigateUri="https://github.com/HandyOrg/HandyControl" 
+                               Name="HandyControl" Click="HandyControl_Click">HandyControl</Hyperlink>
                 </TextBlock>
             </StackPanel>
         </Grid>

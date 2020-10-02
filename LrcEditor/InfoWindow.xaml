@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:LrcEditor"
         xmlns:hc="https://handyorg.github.io/handycontrol"
         mc:Ignorable="d"
-        Title="歌曲信息" Height="300" Width="400" ResizeMode="NoResize">
+        Title="歌曲信息" Height="300" Width="400" ResizeMode="NoResize" ShowInTaskbar="False" WindowStartupLocation="CenterOwner">
     <Grid Margin="20">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="10*"/>

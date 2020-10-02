@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         xmlns:hc="https://handyorg.github.io/handycontrol"
-        Title="Lrc Editor" Height="600" Width="800" Closing="Window_Closing" PreviewKeyDown="Window_PreviewKeyDown">
+        Title="Lrc Editor" Height="600" Width="800" Closing="Window_Closing" PreviewKeyDown="Window_PreviewKeyDown" WindowStartupLocation="CenterScreen">
     <DockPanel>
         <Grid x:Name="MainGrid" Background="White" Height="Auto" DockPanel.Dock="Top">
             <Grid.RowDefinitions>

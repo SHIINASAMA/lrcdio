@@ -33,6 +33,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>bl.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="HandyControl, Version=2.5.0.1, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\HandyControl.2.5.0.2\lib\net40\HandyControl.dll</HintPath>
@@ -131,6 +134,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\wechatpay.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\bl.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="bl.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
