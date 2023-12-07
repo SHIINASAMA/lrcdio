@@ -68,7 +68,8 @@
                     Name="DataView"
                     CanUserReorderColumns="True"
                     Background="LightGray"
-                    AlternationCount="2">
+                    AlternationCount="2"
+                    BorderThickness="0">
                 </DataGrid>
             </Border>
             <StackPanel Grid.Column="1" Orientation="Vertical" Width="50" Background="White">
