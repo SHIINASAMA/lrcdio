@@ -30,20 +30,20 @@ namespace LrcEditor
             InitializeComponent();
 
             this.Headers = Headers;
-            ArTextBox.Text = Headers[(int)Type.AR].Text;
-            AlTextBox.Text = Headers[(int)Type.AL].Text;
-            TiTextBox.Text = Headers[(int)Type.TI].Text;
-            ByTextBox.Text = Headers[(int)Type.BY].Text;
-            OffsetTextBox.Text = Headers[(int)Type.OFFSET].Text;
+            ArTextBox.Text = Headers[(int)Type.Ar].Text;
+            AlTextBox.Text = Headers[(int)Type.Al].Text;
+            TiTextBox.Text = Headers[(int)Type.Ti].Text;
+            ByTextBox.Text = Headers[(int)Type.By].Text;
+            OffsetTextBox.Text = Headers[(int)Type.Offset].Text;
         }
 
         private void SaveBtn_Click(object sender, RoutedEventArgs e)
         {
-            Headers[(int)LrcHeader.Type.AR] = new LrcHeader(LrcHeader.Type.AR, ArTextBox.Text);
-            Headers[(int)LrcHeader.Type.TI] = new LrcHeader(LrcHeader.Type.TI, TiTextBox.Text);
-            Headers[(int)LrcHeader.Type.AL] = new LrcHeader(LrcHeader.Type.AL, AlTextBox.Text);
-            Headers[(int)LrcHeader.Type.BY] = new LrcHeader(LrcHeader.Type.BY, ByTextBox.Text);
-            Headers[(int)LrcHeader.Type.OFFSET] = new LrcHeader(LrcHeader.Type.OFFSET, OffsetTextBox.Text);
+            Headers[(int)LrcHeader.Type.Ar] = new LrcHeader(LrcHeader.Type.Ar, ArTextBox.Text);
+            Headers[(int)LrcHeader.Type.Ti] = new LrcHeader(LrcHeader.Type.Ti, TiTextBox.Text);
+            Headers[(int)LrcHeader.Type.Al] = new LrcHeader(LrcHeader.Type.Al, AlTextBox.Text);
+            Headers[(int)LrcHeader.Type.By] = new LrcHeader(LrcHeader.Type.By, ByTextBox.Text);
+            Headers[(int)LrcHeader.Type.Offset] = new LrcHeader(LrcHeader.Type.Offset, OffsetTextBox.Text);
             DialogResult = true;
         }
 

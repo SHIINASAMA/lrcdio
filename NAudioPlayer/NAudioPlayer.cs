@@ -1,58 +1,37 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NAudio;
 using NAudio.Wave;
 
 namespace NAudioPlayer
 {
     public class NAudioPlayer
     {
-        private IWavePlayer wavePlayer;
-        private AudioFileReader audioFileReader;
+        private IWavePlayer _wavePlayer;
+        private AudioFileReader _audioFileReader;
 
-        private bool isPlaying = false;
         /// <summary>
         /// 当前的播放状态
         /// </summary>
-        public bool IsPlaying
-        {
-            get
-            {
-                return isPlaying;
-            }
-        }
+        public bool IsPlaying { get; private set; }
 
-        private string songName = "";
         /// <summary>
         /// 播放文件路径及名称
         /// </summary>
-        public string SongName
-        {
-            get
-            {
-                return songName;
-            }
-        }
+        private string SongName { get; set; } = "";
 
-        private float volume = 0.5f;
+        private float _volume = 0.5f;
         /// <summary>
         /// 播放器声音大小，默认为50%
         /// </summary>
         public float Volume
         {
-            get { return volume; }
+            get => _volume;
             set
             {
-                if (value >= 0 && value <= 1f)
+                if (value is < 0 or > 1f) return;
+                _volume = value;
+                if (_audioFileReader != null)
                 {
-                    volume = value;
-                    if (audioFileReader != null)
-                    {
-                        audioFileReader.Volume = value;
-                    }
+                    _audioFileReader.Volume = value;
                 }
             }
         }
@@ -62,36 +41,35 @@ namespace NAudioPlayer
         /// </summary>
         public NAudioPlayer()
         {
-
         }
 
         /// <summary>
         /// 初始化播放器,初始化参数为播放文件路径
         /// </summary>
-        public void Load(string SongName)
+        public void Load(string songName)
         {
-            if (isPlaying)
+            if (IsPlaying)
             {
-                isPlaying = false;
+                IsPlaying = false;
             }
 
-            if (string.IsNullOrEmpty(SongName))
+            if (string.IsNullOrEmpty(songName))
                 return;
 
-            this.songName = SongName;
+            this.SongName = songName;
 
-            if (wavePlayer != null)
+            if (_wavePlayer != null)
             {
-                wavePlayer.Dispose();
+                _wavePlayer.Dispose();
                 GC.Collect();
             }
 
-            wavePlayer = new WaveOut();
-            audioFileReader = new AudioFileReader(songName);
-            audioFileReader.Volume = Volume;
-            wavePlayer.Init(audioFileReader);
-            wavePlayer.PlaybackStopped += WavePlayer_PlaybackStopped;
-            wavePlayer.Pause();
+            _wavePlayer = new WaveOut();
+            _audioFileReader = new AudioFileReader(SongName);
+            _audioFileReader.Volume = Volume;
+            _wavePlayer.Init(_audioFileReader);
+            _wavePlayer.PlaybackStopped += WavePlayer_PlaybackStopped;
+            _wavePlayer.Pause();
         }
 
         private void WavePlayer_PlaybackStopped(object sender, StoppedEventArgs e)
@@ -107,7 +85,7 @@ namespace NAudioPlayer
             //    wavePlayer = null;
             //}
             CurrentTime = TimeSpan.Zero;
-            isPlaying = false;
+            IsPlaying = false;
         }
 
         /// <summary>
@@ -117,20 +95,17 @@ namespace NAudioPlayer
         {
             get
             {
-                if (audioFileReader == null)
+                if (_audioFileReader == null)
                 {
                     return TimeSpan.Zero;
                 }
                 else
                 {
-                    return audioFileReader.CurrentTime;
+                    return _audioFileReader.CurrentTime;
                 }
 
             }
-            set
-            {
-                audioFileReader.CurrentTime = value;
-            }
+            set => _audioFileReader.CurrentTime = value;
         }
 
         /// <summary>
@@ -140,13 +115,13 @@ namespace NAudioPlayer
         {
             get
             {
-                if (audioFileReader == null)
+                if (_audioFileReader == null)
                 {
                     return TimeSpan.Zero;
                 }
                 else
                 {
-                    return audioFileReader.TotalTime;
+                    return _audioFileReader.TotalTime;
                 }
             }
         }
@@ -187,18 +162,18 @@ namespace NAudioPlayer
         /// </summary>
         public void Play()
         {
-            if (isPlaying)
+            if (IsPlaying)
             {
                 return;
             }
 
-            if (wavePlayer == null)
+            if (_wavePlayer == null)
             {
                 return;
             }
 
-            wavePlayer.Play();
-            isPlaying = true;
+            _wavePlayer.Play();
+            IsPlaying = true;
         }
 
         /// <summary>
@@ -206,10 +181,10 @@ namespace NAudioPlayer
         /// </summary>
         public void Pause()
         {
-            if (wavePlayer != null)
+            if (_wavePlayer != null)
             {
-                wavePlayer.Pause();
-                isPlaying = false;
+                _wavePlayer.Pause();
+                IsPlaying = false;
             }
         }
     }

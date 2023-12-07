@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Remoting.Messaging;
-using System.Text;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 
 namespace LrcLib.LrcData
 {
@@ -11,29 +6,36 @@ namespace LrcLib.LrcData
     {
         public enum Type
         {
-            AR,AL,TI,OFFSET,BY,UNKNOW
+            Ar,
+            Al,
+            Ti,
+            Offset,
+            By,
+            Unknown
         }
 
-        public Type HeaderType = Type.UNKNOW;
+        public Type HeaderType;
 
         public string Text;
 
-        public static string FormatString = @"\[\w{2,6}\:.*\]";
-
-        public LrcHeader() { }
-
-        public LrcHeader(Type Type,string Text)
-        {
-            HeaderType = Type;
-            this.Text = Text;
-        }
+        public static readonly string FormatString = @"\[\w{2,6}\:.*\]";
 
         public static bool IsHeader(string line)
         {
-            return Regex.IsMatch(line,FormatString);
+            return Regex.IsMatch(line, FormatString);
         }
 
-        public static LrcHeader Pause(string line) 
+        private LrcHeader()
+        {
+        }
+
+        public LrcHeader(Type type, string text)
+        {
+            this.HeaderType = type;
+            this.Text = text;
+        }
+
+        public static LrcHeader Pause(string line)
         {
             LrcHeader header = new LrcHeader();
             line = line.Substring(1, line.Length - 2);
@@ -41,24 +43,25 @@ namespace LrcLib.LrcData
             switch (temp[0].ToUpper())
             {
                 case "AR":
-                    header.HeaderType = Type.AR;
+                    header.HeaderType = Type.Ar;
                     break;
                 case "TI":
-                    header.HeaderType = Type.TI;
+                    header.HeaderType = Type.Ti;
                     break;
                 case "AL":
-                    header.HeaderType = Type.AL;
+                    header.HeaderType = Type.Al;
                     break;
                 case "BY":
-                    header.HeaderType = Type.BY;
+                    header.HeaderType = Type.By;
                     break;
                 case "OFFSET":
-                    header.HeaderType = Type.OFFSET;
+                    header.HeaderType = Type.Offset;
                     break;
                 default:
-                    header.HeaderType = Type.UNKNOW;
+                    header.HeaderType = Type.Unknown;
                     break;
             }
+
             header.Text = temp[1];
             return header;
         }
@@ -67,15 +70,15 @@ namespace LrcLib.LrcData
         {
             switch (HeaderType)
             {
-                case Type.AR:
+                case Type.Ar:
                     return "[Ar:" + Text + "]";
-                case Type.TI:
+                case Type.Ti:
                     return "[Ti:" + Text + "]";
-                case Type.AL:
+                case Type.Al:
                     return "[Al:" + Text + "]";
-                case Type.BY:
+                case Type.By:
                     return "[By:" + Text + "]";
-                case Type.OFFSET:
+                case Type.Offset:
                     return "[Offset:" + Text + "]";
                 default:
                     return null;

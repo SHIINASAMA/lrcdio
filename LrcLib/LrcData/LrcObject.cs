@@ -13,11 +13,11 @@ namespace LrcLib.LrcData
 
         public LrcObject()
         {
-            LrcHeaders[(int)LrcHeader.Type.AR] = new LrcHeader(LrcHeader.Type.AR, "AR");
-            LrcHeaders[(int)LrcHeader.Type.TI] = new LrcHeader(LrcHeader.Type.TI, "TI");
-            LrcHeaders[(int)LrcHeader.Type.AL] = new LrcHeader(LrcHeader.Type.AL, "AL");
-            LrcHeaders[(int)LrcHeader.Type.BY] = new LrcHeader(LrcHeader.Type.BY, "BY");
-            LrcHeaders[(int)LrcHeader.Type.OFFSET] = new LrcHeader(LrcHeader.Type.OFFSET, "0");
+            LrcHeaders[(int)LrcHeader.Type.Ar] = new LrcHeader(LrcHeader.Type.Ar, "AR");
+            LrcHeaders[(int)LrcHeader.Type.Ti] = new LrcHeader(LrcHeader.Type.Ti, "TI");
+            LrcHeaders[(int)LrcHeader.Type.Al] = new LrcHeader(LrcHeader.Type.Al, "AL");
+            LrcHeaders[(int)LrcHeader.Type.By] = new LrcHeader(LrcHeader.Type.By, "BY");
+            LrcHeaders[(int)LrcHeader.Type.Offset] = new LrcHeader(LrcHeader.Type.Offset, "0");
         }
     }
 }

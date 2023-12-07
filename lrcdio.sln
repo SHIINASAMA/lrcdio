@@ -1,7 +1,7 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30503.244
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{43D902C6-7AA9-4035-92B0-E260F612F4B8}"
 	ProjectSection(SolutionItems) = preProject
@@ -9,11 +9,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		bin\WriteTest.lrc = bin\WriteTest.lrc
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LrcEditor", "LrcEditor\LrcEditor.csproj", "{A0F9A804-BFFA-49BE-AD1E-3A842873925C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LrcEditor", "LrcEditor\LrcEditor.csproj", "{A0F9A804-BFFA-49BE-AD1E-3A842873925C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LrcLib", "LrcLib\LrcLib.csproj", "{48DFDB12-489C-4F60-9619-FA0027FEC55A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LrcLib", "LrcLib\LrcLib.csproj", "{48DFDB12-489C-4F60-9619-FA0027FEC55A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NAudioPlayer", "NAudioPlayer\NAudioPlayer.csproj", "{8F0DB4AE-D87E-4BB1-9863-4400793376C0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NAudioPlayer", "NAudioPlayer\NAudioPlayer.csproj", "{8F0DB4AE-D87E-4BB1-9863-4400793376C0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

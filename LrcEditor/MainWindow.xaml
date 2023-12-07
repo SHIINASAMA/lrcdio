@@ -54,9 +54,6 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <DataGrid Grid.Column="0" Margin="5" Name="DataView" CanUserReorderColumns="True" AlternationCount="2">
-                <DataGrid.Columns>
-                    
-                </DataGrid.Columns>
             </DataGrid>
             <StackPanel Grid.Column="1" Orientation="Vertical" Width="50" Background="White" >
                 <Button Margin="5" Name="AddBtn" Click="AddBtn_Click">

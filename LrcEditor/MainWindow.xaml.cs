@@ -8,10 +8,10 @@ using Player = NAudioPlayer.NAudioPlayer;
 using Window = HandyControl.Controls.Window;
 using System.Data;
 using LrcLib.LrcData;
-using LrcLib.LrcAdapter;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
-using System.Text;
+using LrcLib.LrcFileKits;
 
 namespace LrcEditor
 {
@@ -20,39 +20,40 @@ namespace LrcEditor
     /// </summary>
     public partial class MainWindow : Window
     {
-        Player Player = new Player();
-        string AudioPath;
-        string LrcPath;
+        private readonly Player _player = new Player();
+        private string _audioPath;
+        private string _lrcPath;
 
-        Timer Timer = new Timer();
-        bool IsChanging = false;
+        private readonly Timer _timer;
+        private bool _isChanging = false;
 
-        LrcHeader[] LrcHeaders = new LrcHeader[5];
-        DataTable dt = new DataTable();
+        private LrcHeader[] _lrcHeaders = new LrcHeader[5];
+        private readonly DataTable _dt = new DataTable();
 
         public MainWindow()
         {
+            _timer = new Timer();
             InitializeComponent();
-
-            Timer.Interval = 100;
-            Timer.Tick += Timer_Tick;
+            _timer.Interval = 100;
+            _timer.Tick += Timer_Tick;
 
             AudioProgress.AddHandler(Slider.MouseDownEvent, new RoutedEventHandler(AudioProgress_MouseDown), true);
             AudioProgress.AddHandler(Slider.MouseUpEvent, new RoutedEventHandler(AudioProgress_MouseUp), true);
 
-            dt.Columns.Add(new DataColumn("时间"));
-            dt.Columns.Add(new DataColumn("文本"));
-            DataView.ItemsSource = dt.DefaultView;
+            _dt.Columns.Add(new DataColumn("时间"));
+            _dt.Columns.Add(new DataColumn("文本"));
+            DataView.ItemsSource = _dt.DefaultView;
             DataView.ColumnWidth = DataGridLength.SizeToCells;
 
-            LrcHeaders[(int)LrcHeader.Type.AR] = new LrcHeader(LrcHeader.Type.AR, "AR");
-            LrcHeaders[(int)LrcHeader.Type.TI] = new LrcHeader(LrcHeader.Type.TI, "TI");
-            LrcHeaders[(int)LrcHeader.Type.AL] = new LrcHeader(LrcHeader.Type.AL, "AL");
-            LrcHeaders[(int)LrcHeader.Type.BY] = new LrcHeader(LrcHeader.Type.BY, "BY");
-            LrcHeaders[(int)LrcHeader.Type.OFFSET] = new LrcHeader(LrcHeader.Type.OFFSET, "OFFSET");
+            _lrcHeaders[(int)LrcHeader.Type.Ar] = new LrcHeader(LrcHeader.Type.Ar, "AR");
+            _lrcHeaders[(int)LrcHeader.Type.Ti] = new LrcHeader(LrcHeader.Type.Ti, "TI");
+            _lrcHeaders[(int)LrcHeader.Type.Al] = new LrcHeader(LrcHeader.Type.Al, "AL");
+            _lrcHeaders[(int)LrcHeader.Type.By] = new LrcHeader(LrcHeader.Type.By, "BY");
+            _lrcHeaders[(int)LrcHeader.Type.Offset] = new LrcHeader(LrcHeader.Type.Offset, "OFFSET");
         }
 
         #region 菜单响应
+
         private void About_Click(object sender, RoutedEventArgs e)
         {
             AboutWindow window = new AboutWindow();
@@ -66,10 +67,10 @@ namespace LrcEditor
             dlg.Filter = "Mp3|*.mp3|Wave|*.wav|MIDI|*.midi|所有文件|*.*";
             if (dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                AudioPath = dlg.FileName;
+                _audioPath = dlg.FileName;
                 try
                 {
-                    Player.Load(dlg.FileName);
+                    _player.Load(dlg.FileName);
                 }
                 catch (Exception ex)
                 {
@@ -77,13 +78,14 @@ namespace LrcEditor
                     // AudioName.Text = "请选择正确的音频文件";
                     return;
                 }
+
                 AudioName.Text = dlg.FileName;
-                AudioProgress.Maximum = Player.TotalTime.TotalSeconds;
+                AudioProgress.Maximum = _player.TotalTime.TotalSeconds;
                 AudioProgress.Value = 0;
-                SetPanalUsable(true);
-                TotalTime.Content = Time2String(Player.TotalTime);
+                SetPanelUsable(true);
+                TotalTime.Content = Time2String(_player.TotalTime);
                 Pause.Content = "Play";
-                Timer.Start();
+                _timer.Start();
             }
         }
 
@@ -94,19 +96,19 @@ namespace LrcEditor
             dlg.Filter = "Lrc|*.lrc|Text|*.txt|所有文件|*.*";
             if (dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                LrcPath = dlg.FileName;
+                _lrcPath = dlg.FileName;
                 Title = "Lrc Editor - " + dlg.FileName;
                 LrcObject Lrc = new LrcObject();
-                LrcAdapter.ReadFromFile(ref Lrc, LrcPath);
-                LrcHeaders = Lrc.LrcHeaders;
+                LrcFileKits.ReadFromFile(ref Lrc, _lrcPath);
+                _lrcHeaders = Lrc.LrcHeaders;
 
                 DataRow dr = null;
                 foreach (LrcLine line in Lrc.LrcLines)
                 {
-                    dr = dt.NewRow();
+                    dr = _dt.NewRow();
                     dr[0] = Time2String(line.Time);
                     dr[1] = line.Text;
-                    dt.Rows.Add(dr);
+                    _dt.Rows.Add(dr);
                 }
 
                 SetInfo.IsEnabled = true;
@@ -120,17 +122,16 @@ namespace LrcEditor
 
         private void SaveAs_Click(object sender, RoutedEventArgs e)
         {
-
         }
 
         private void CloseAll_Click(object sender, RoutedEventArgs e)
         {
-            SetPanalUsable(false);
+            SetPanelUsable(false);
             Title = "Lrc Editor";
             AudioName.Text = "请先打开音频文件";
-            dt.Rows.Clear();
-            LrcPath = null;
-            AudioPath = null;
+            _dt.Rows.Clear();
+            _lrcPath = null;
+            _audioPath = null;
         }
 
         private void Exit_Click(object sender, RoutedEventArgs e)
@@ -150,23 +151,25 @@ namespace LrcEditor
 
         private void SetInfo_Click(object sender, RoutedEventArgs e)
         {
-            InfoWindow infoWindow = new InfoWindow(LrcHeaders);
+            InfoWindow infoWindow = new InfoWindow(_lrcHeaders);
             if ((bool)infoWindow.ShowDialog())
             {
-                LrcHeaders = infoWindow.Headers;
+                _lrcHeaders = infoWindow.Headers;
             }
         }
 
         #endregion
+
         #region 音频控制面板响应
+
         private void LLStep_Click(object sender, RoutedEventArgs e)
         {
-            Player.Jump(-200);
+            _player.Jump(-200);
         }
 
         private void LStep_Click(object sender, RoutedEventArgs e)
         {
-            Player.Jump(-100);
+            _player.Jump(-100);
         }
 
         private void Pause_Click(object sender, RoutedEventArgs e)
@@ -176,29 +179,32 @@ namespace LrcEditor
 
         private void RStep_Click(object sender, RoutedEventArgs e)
         {
-            Player.Jump(100);
+            _player.Jump(100);
         }
 
         private void RRStep_Click(object sender, RoutedEventArgs e)
         {
-            Player.Jump(200);
+            _player.Jump(200);
         }
+
         #endregion
+
         #region 其他
+
         private void Timer_Tick(object sender, EventArgs e)
         {
             Dispatcher.BeginInvoke(new Action(() =>
             {
-                SetProgress(Player.CurrentTime);
+                SetProgress(_player.CurrentTime);
                 IsEnd();
             }));
         }
 
         private void SetProgress(TimeSpan time)
         {
-            if (IsChanging)
+            if (_isChanging)
             {
-                Time.Content = Time2String(new TimeSpan(0, 0,(int)AudioProgress.Value));
+                Time.Content = Time2String(new TimeSpan(0, 0, (int)AudioProgress.Value));
             }
             else
             {
@@ -223,22 +229,22 @@ namespace LrcEditor
 
         private void IsEnd()
         {
-            if (Time.Content.ToString() == TotalTime.Content.ToString()) 
+            if (Time.Content.ToString() == TotalTime.Content.ToString())
             {
-                Player.Pause();
+                _player.Pause();
                 Pause.Content = "Replay";
             }
         }
 
         private void AudioProgress_MouseDown(object sender, RoutedEventArgs e)
         {
-            IsChanging = true;
+            _isChanging = true;
         }
 
         private void AudioProgress_MouseUp(object sender, RoutedEventArgs e)
         {
-            IsChanging = false;
-            Player.CurrentTime = new TimeSpan(0, 0, (int)AudioProgress.Value);
+            _isChanging = false;
+            _player.CurrentTime = new TimeSpan(0, 0, (int)AudioProgress.Value);
         }
 
         // 快捷键响应
@@ -253,30 +259,31 @@ namespace LrcEditor
                         PlayFunc();
                         break;
                     case Key.OemComma:
-                        Player.Jump(-100);
+                        _player.Jump(-100);
                         //SetStep(-100);
                         // LStepFunc();
                         break;
                     case Key.OemPeriod:
-                        Player.Jump(100);
+                        _player.Jump(100);
                         //SetStep(100);
                         // RStepFunc();
                         break;
                     case Key.Oem4:
-                        Player.Jump(-200);
+                        _player.Jump(-200);
                         //SetStep(-200);
                         // LLStepFunc();
                         break;
                     case Key.Oem6:
-                        Player.Jump(200);
+                        _player.Jump(200);
                         //SetStep(200);
                         // RRStepFunc();
                         break;
                 }
             }
-            if(ModifierKeys.Control == e.KeyboardDevice.Modifiers)
+
+            if (ModifierKeys.Control == e.KeyboardDevice.Modifiers)
             {
-                switch(e.Key)
+                switch (e.Key)
                 {
                     case Key.T:
                         SetTime();
@@ -293,8 +300,11 @@ namespace LrcEditor
                 }
             }
         }
+
         #endregion
+
         #region DataView响应
+
         private void RmBtn_Click(object sender, RoutedEventArgs e)
         {
             DelItem();
@@ -306,23 +316,25 @@ namespace LrcEditor
         }
 
         #endregion
+
         #region 通用方法
+
         private void PlayFunc()
         {
-            if (Pause.Content.ToString() == "Replay") Player.CurrentTime = TimeSpan.Zero;
+            if (Pause.Content.ToString() == "Replay") _player.CurrentTime = TimeSpan.Zero;
 
-            if (!Player.IsPlaying)
+            if (!_player.IsPlaying)
             {
                 Pause.Content = "Pause";
-                Player.Play();
+                _player.Play();
             }
             else
             {
                 Pause.Content = "Play";
-                Player.Pause();
+                _player.Pause();
             }
         }
-  
+
         private string Time2String(TimeSpan time)
         {
             string min = time.Minutes.ToString();
@@ -338,12 +350,13 @@ namespace LrcEditor
             return min + ":" + sec + "." + ms;
         }
 
-        private void SetPanalUsable(bool b)
+        private void SetPanelUsable(bool b)
         {
-            LLStep.IsEnabled = LStep.IsEnabled = Pause.IsEnabled = RStep.IsEnabled = RRStep.IsEnabled = AudioProgress.IsEnabled = b;
-            if (!b && Player.IsPlaying)
+            LLStep.IsEnabled = LStep.IsEnabled =
+                Pause.IsEnabled = RStep.IsEnabled = RRStep.IsEnabled = AudioProgress.IsEnabled = b;
+            if (!b && _player.IsPlaying)
             {
-                Player.Pause();
+                _player.Pause();
                 Time.Content = TotalTime.Content = "00:00.000";
             }
         }
@@ -352,28 +365,27 @@ namespace LrcEditor
         {
             if (DataView.SelectedIndex == -1 && DataView.Items.Count != 0)
             {
-                dt.Rows.RemoveAt(DataView.Items.Count - 1);
+                _dt.Rows.RemoveAt(DataView.Items.Count - 1);
             }
             else if (DataView.SelectedIndex != -1)
             {
-                dt.Rows.RemoveAt(DataView.SelectedIndex);
+                _dt.Rows.RemoveAt(DataView.SelectedIndex);
             }
         }
 
         private void AddItem()
         {
-            DataRow dr;
-            dr = dt.NewRow();
+            var dr = _dt.NewRow();
             dr[0] = Time.Content;
             if (DataView.SelectedIndex == -1)
             {
-                dt.Rows.Add(dr);
+                _dt.Rows.Add(dr);
                 DataView.SelectedIndex = DataView.Items.Count - 1;
                 DataView.ScrollIntoView(DataView.SelectedItem);
             }
             else
             {
-                dt.Rows.InsertAt(dr, DataView.SelectedIndex + 1);
+                _dt.Rows.InsertAt(dr, DataView.SelectedIndex + 1);
                 ++DataView.SelectedIndex;
                 DataView.ScrollIntoView(DataView.SelectedItem);
             }
@@ -382,35 +394,36 @@ namespace LrcEditor
         private void SetTime()
         {
             if (DataView.SelectedIndex == -1) return;
-            dt.Rows[DataView.SelectedIndex][0] = Time.Content;
+            _dt.Rows[DataView.SelectedIndex][0] = Time.Content;
         }
 
         private void FormatSaveFunc(string path)
         {
             // if (DataView.Items.Count == 0) return;
-            List<LrcLine> Lines = new List<LrcLine>();
-            foreach(DataRow dr in dt.Rows)
-            {
-                Lines.Add(LrcLine.Pause("[" + dr[0] + "]" + dr[1])[0]);
-            }
+            List<LrcLine> lines = [];
+            lines.AddRange(from DataRow dr in _dt.Rows select LrcLine.Pause("[" + dr[0] + "]" + dr[1])[0]);
 
-            LrcObject lrc = new LrcObject();
-            lrc.LrcHeaders = this.LrcHeaders;
-            lrc.LrcLines = Lines;
-            LrcAdapter.WriteToFile(ref lrc, path);
+            var lrc = new LrcObject
+            {
+                LrcHeaders = this._lrcHeaders,
+                LrcLines = lines
+            };
+            LrcFileKits.WriteToFile(ref lrc, path);
         }
 
         private int CheckTimeFormat()
         {
             int index = 0;
-            foreach(DataRow dr in dt.Rows)
+            foreach (DataRow dr in _dt.Rows)
             {
                 if (!Regex.IsMatch((string)dr[0], @"(\d{ 1,2}\:\d{ 1,2}\.\d{ 2,3})| (\d{ 1,2}\:\d{ 1,2})"))
                 {
                     return index;
                 }
+
                 ++index;
             }
+
             return -1;
         }
 
@@ -421,6 +434,7 @@ namespace LrcEditor
                 MessageBox.Show("内容不能为空", "警告", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
+
             //int i = CheckTimeFormat();
             //if (i >= 0)
             //{
@@ -429,15 +443,15 @@ namespace LrcEditor
             //    MessageBox.Show("时间格式错误", "警告", MessageBoxButton.OK, MessageBoxImage.Warning);
             //    return;
             //}
-            if (LrcPath == null)
+            if (_lrcPath == null)
             {
-                SaveFileDialog dlg = new SaveFileDialog();
+                var dlg = new SaveFileDialog();
                 dlg.Filter = "LRC文件|*.Lrc|文本文件|*.txt";
                 if (dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
-                    LrcPath = dlg.FileName;
-                    FormatSaveFunc(LrcPath);
-                    Title = "Lrc Edit -" + LrcPath;
+                    _lrcPath = dlg.FileName;
+                    FormatSaveFunc(_lrcPath);
+                    Title = "Lrc Edit -" + _lrcPath;
                 }
             }
             else
@@ -452,10 +466,11 @@ namespace LrcEditor
                 //}
                 //else
                 //{
-                    FormatSaveFunc(LrcPath);
+                FormatSaveFunc(_lrcPath);
                 //e}
             }
         }
+
         #endregion
     }
 }

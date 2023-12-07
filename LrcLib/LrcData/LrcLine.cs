@@ -9,27 +9,30 @@ namespace LrcLib.LrcData
     public class LrcLine
     {
         public TimeSpan Time;
-        public string Text;
+        public readonly string Text;
 
-        public static string[] FormatString = { @"(\[\d{1,2}\:\d{1,2}\.\d{2,3}\])", @"(\[\d{1,2}\:\d{1,2}\]))" };
+        private static readonly string[] FormatString =
+            { @"(\[\d{1,2}\:\d{1,2}\.\d{2,3}\])", @"(\[\d{1,2}\:\d{1,2}\]))" };
 
-        public LrcLine() { }
-
-        public LrcLine(TimeSpan Time,string Text)
+        public LrcLine()
         {
-            this.Time = Time;
-            this.Text = Text;
         }
 
-        public static string TimeToString(TimeSpan Time)
+        private LrcLine(TimeSpan time, string text)
         {
-            string min = Time.Minutes.ToString();
+            this.Time = time;
+            this.Text = text;
+        }
+
+        private static string TimeToString(TimeSpan time)
+        {
+            string min = time.Minutes.ToString();
             if (min.Length == 1) min = "0" + min;
 
-            string sec = Time.Seconds.ToString();
+            string sec = time.Seconds.ToString();
             if (sec.Length == 1) sec = "0" + sec;
 
-            string ms = Time.Milliseconds.ToString();
+            string ms = time.Milliseconds.ToString();
             if (ms.Length == 1) ms = "00" + ms;
             else if (ms.Length == 2) ms = "0" + ms;
 
@@ -55,9 +58,9 @@ namespace LrcLib.LrcData
             string text;
             List<LrcLine> result = new List<LrcLine>();
             // 有歌词
-            if (!Regex.IsMatch(temp[temp.Length - 1], @"(\[\d{ 1,2}\:\d{ 1,2}\.\d{ 2,3}\])| (\[\d{ 1,2}\:\d{ 1,2}\])"))
+            if (!Regex.IsMatch(temp[^1], @"(\[\d{ 1,2}\:\d{ 1,2}\.\d{ 2,3}\])| (\[\d{ 1,2}\:\d{ 1,2}\])"))
             {
-                text = temp[temp.Length - 1];
+                text = temp[^1];
                 for (int i = 0; i < temp.Length - 1; i++)
                 {
                     TimeSpan timeSpan = GetLrcTime(temp[i] + "]");
@@ -67,23 +70,24 @@ namespace LrcLib.LrcData
             else
             {
                 text = "";
-                for (int i = 0; i < temp.Length; i++)
+                foreach (var t in temp)
                 {
-                    TimeSpan timeSpan = GetLrcTime(temp[i] + "]");
+                    TimeSpan timeSpan = GetLrcTime(t + "]");
                     result.Add(new LrcLine(timeSpan, text));
                 }
             }
+
             return result;
         }
 
-        public static TimeSpan GetLrcTime(string line)
+        private static TimeSpan GetLrcTime(string line)
         {
             int min;
             int sec;
-            int ms;
             // 有毫秒格式
             if (Regex.IsMatch(line, FormatString[0]))
             {
+                int ms;
                 line = line.Substring(1, line.Length - 2);
                 string[] temp = line.Split(':', '.');
                 min = int.Parse(temp[0]);
