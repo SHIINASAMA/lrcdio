@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Runtime.Versioning;
 using NAudio.Wave;
 
 namespace NAudioPlayer
 {
+    [SupportedOSPlatform("windows")]
     public class NAudioPlayer
     {
         private IWavePlayer _wavePlayer;

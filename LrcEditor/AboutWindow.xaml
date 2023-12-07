@@ -30,7 +30,7 @@
             <ColumnDefinition Width="5*" />
         </Grid.ColumnDefinitions>
         <hc:SideMenu Grid.Column="0" AutoSelect="True">
-            <hc:SideMenuItem Header="关于" Style="{StaticResource MenuItem}" Selected="About_Selected" IsSelected="True" />
+            <hc:SideMenuItem Header="信息" Style="{StaticResource MenuItem}" Selected="About_Selected" IsSelected="True" />
             <hc:SideMenuItem Header="依赖" Style="{StaticResource MenuItem}" Selected="Depend_Selected" />
         </hc:SideMenu>
         <TextBlock Grid.Column="1" />
@@ -65,6 +65,13 @@
                            TextWrapping="Wrap"
                            Margin="5px,16px,0,16px"
                            Text="Lrcdio 项目的实现离不开各类开源软件的支持，以下是使用了的开源软件：" />
+                <TextBlock Style="{StaticResource DepsTextHyper}">
+                    <Hyperlink NavigateUri="https://github.com/fody/costura"
+                               Name="CosturaFody"
+                               RequestNavigate="Jump">
+                        Fody/Costura
+                    </Hyperlink>
+                </TextBlock>
                 <TextBlock Style="{StaticResource DepsTextHyper}">
                     <Hyperlink NavigateUri="https://github.com/naudio/NAudio"
                                Name="NAudio"
