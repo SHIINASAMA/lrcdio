@@ -43,12 +43,6 @@
     <ProjectReference Include="..\NAudioPlayer\NAudioPlayer.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\alipay.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\wechatpay.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Resources\bl.ico" />
   </ItemGroup>
   <ItemGroup>
@@ -67,7 +61,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="HandyControl" Version="2.5.0.2" />
+    <PackageReference Include="HandyControl" Version="3.4.0" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
   </ItemGroup>

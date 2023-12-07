@@ -1,70 +1,100 @@
 ﻿<hc:Window x:Class="LrcEditor.AboutWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:LrcEditor"
-        mc:Ignorable="d"
-        xmlns:hc="https://handyorg.github.io/handycontrol"
-        Height="300" Width="450" Title="关于" ShowInTaskbar="False" ResizeMode="NoResize" WindowStartupLocation="CenterOwner">
+           xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+           xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+           xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+           xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+           mc:Ignorable="d"
+           xmlns:hc="https://handyorg.github.io/handycontrol"
+           Height="300" Width="450" Title="关于" ShowInTaskbar="False" ResizeMode="NoResize"
+           WindowStartupLocation="CenterOwner">
+    <Window.Resources>
+        <Style x:Key="TextHyper" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="DodgerBlue" />
+            <Setter Property="FontSize" Value="20" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="Margin" Value="7,7,7,7" />
+        </Style>
+        <Style x:Key="DepsTextHyper" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="DodgerBlue" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="Margin" Value="7,7,7,7" />
+        </Style>
+        <Style x:Key="MenuItem" TargetType="hc:SideMenuItem">
+            <Setter Property="Foreground" Value="DodgerBlue" />
+        </Style>
+    </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="5*"/>
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="5*" />
         </Grid.ColumnDefinitions>
         <hc:SideMenu Grid.Column="0" AutoSelect="True">
-            <hc:SideMenuItem Header="关于" Name="About" Selected="About_Selected" IsSelected="True"/>
-            <hc:SideMenuItem Header="依赖" Name="Depend" Selected="Depend_Selected"/>
-            <hc:SideMenuItem Header="捐赠" Name="Donate" Selected="Donate_Selected"/>
+            <hc:SideMenuItem Header="关于" Style="{StaticResource MenuItem}" Selected="About_Selected" IsSelected="True" />
+            <hc:SideMenuItem Header="依赖" Style="{StaticResource MenuItem}" Selected="Depend_Selected" />
         </hc:SideMenu>
-        <TextBlock Grid.Column="1"/>
+        <TextBlock Grid.Column="1" />
         <Grid Grid.Column="1" Name="AboutView" Visibility="Visible">
-            <StackPanel>
-                <TextBlock Text="Lrc Editor" HorizontalAlignment="Center" FontSize="30"/>
-                <TextBlock HorizontalAlignment="Center" FontSize="20">
-                    <Hyperlink NavigateUri="https://github.com/SHIINASAMA/lrcdio" 
-                               Name="GitLink" Click="GitLink_Click">项目仓库地址</Hyperlink>
+            <StackPanel Background="White">
+                <hc:ImageBlock Height="64px" Width="64px" Margin="0,15px,0,2px" Source="Resources/bl.ico" />
+                <TextBlock Text="Lrc Editor" HorizontalAlignment="Center" FontSize="23" Margin="0,0,0,20px" />
+                <TextBlock Style="{StaticResource TextHyper}">
+                    <Hyperlink NavigateUri="https://github.com/SHIINASAMA/lrcdio"
+                               RequestNavigate="Jump">
+                        项目仓库地址
+                    </Hyperlink>
                 </TextBlock>
-                <TextBlock HorizontalAlignment="Center" FontSize="20">
+                <TextBlock Style="{StaticResource TextHyper}">
                     <Hyperlink NavigateUri="https://github.com/SHIINASAMA"
-                               Name="Maker" Click="Maker_Click">开发人员</Hyperlink>
+                               RequestNavigate="Jump">
+                        开发人员
+                    </Hyperlink>
                 </TextBlock>
-                <TextBlock HorizontalAlignment="Center" FontSize="20">
+                <TextBlock Style="{StaticResource TextHyper}">
                     <Hyperlink NavigateUri="https://github.com/SHIINASAMA/lrcdio/blob/master/LICENSE"
-                               Name="License" Click="License_Click">源代码许可协议</Hyperlink>
+                               RequestNavigate="Jump">
+                        源代码许可协议
+                    </Hyperlink>
                 </TextBlock>
             </StackPanel>
         </Grid>
         <Grid Grid.Column="1" Name="DependView" Visibility="Hidden">
-            <StackPanel>
-                <TextBlock HorizontalAlignment="Center" FontSize="30" Text="依赖项"/>
-                <TextBlock HorizontalAlignment="Center" FontSize="20">
+            <StackPanel Background="White">
+                <TextBlock HorizontalAlignment="Left"
+                           FontSize="16"
+                           TextWrapping="Wrap"
+                           Margin="5px,16px,0,16px"
+                           Text="Lrcdio 项目的实现离不开各类开源软件的支持，以下是使用了的开源软件：" />
+                <TextBlock Style="{StaticResource DepsTextHyper}">
                     <Hyperlink NavigateUri="https://github.com/naudio/NAudio"
-                               Name="NAudio" Click="NAudio_Click">NAudio</Hyperlink>
+                               Name="NAudio"
+                               RequestNavigate="Jump">
+                        NAudio
+                    </Hyperlink>
                 </TextBlock>
-                <TextBlock HorizontalAlignment="Center" FontSize="20">
+                <TextBlock Style="{StaticResource DepsTextHyper}">
                     <Hyperlink NavigateUri="https://github.com/SHIINASAMA/NAudioPlayer"
-                               Name="NAudioPlayer" Click="NAudioPlayer_Click">NAudioPlayer</Hyperlink>
+                               Name="NAudioPlayer"
+                               RequestNavigate="Jump">
+                        NAudioPlayer
+                    </Hyperlink>
                 </TextBlock>
-                <TextBlock HorizontalAlignment="Center" FontSize="20">
+                <TextBlock Style="{StaticResource DepsTextHyper}">
                     <Hyperlink NavigateUri="https://github.com/SHIINASAMA/LrcLib"
-                               Name="LrcLib" Click="LrcLib_Click">LrcLib</Hyperlink>
+                               Name="LrcLib"
+                               TextDecorations="Strikethrough"
+                               RequestNavigate="Jump">
+                        LrcLib
+                    </Hyperlink>
                 </TextBlock>
-                <TextBlock HorizontalAlignment="Center" FontSize="20">
-                    <Hyperlink NavigateUri="https://github.com/HandyOrg/HandyControl" 
-                               Name="HandyControl" Click="HandyControl_Click">HandyControl</Hyperlink>
+                <TextBlock Style="{StaticResource DepsTextHyper}">
+                    <Hyperlink NavigateUri="https://github.com/HandyOrg/HandyControl"
+                               Name="HandyControl"
+                               RequestNavigate="Jump">
+                        HandyControl
+                    </Hyperlink>
                 </TextBlock>
             </StackPanel>
-        </Grid>
-        <Grid Grid.Column="1" Name="DonateView" Visibility="Hidden">
-            <Grid Margin="0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-                <Image Grid.Column="0" Source="Resources/alipay.jpg" Stretch="Uniform"/>
-                <Image Grid.Column="1" Source="Resources/wechatpay.png" Stretch="Uniform"/>
-            </Grid>
         </Grid>
     </Grid>
 </hc:Window>

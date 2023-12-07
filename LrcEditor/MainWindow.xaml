@@ -1,66 +1,82 @@
 ﻿<hc:Window x:Class="LrcEditor.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d"
-        xmlns:hc="https://handyorg.github.io/handycontrol"
-        Title="Lrc Editor" Height="600" Width="800" Closing="Window_Closing" PreviewKeyDown="Window_PreviewKeyDown" WindowStartupLocation="CenterScreen">
+           xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+           xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+           xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+           xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+           mc:Ignorable="d"
+           xmlns:hc="https://handyorg.github.io/handycontrol"
+           Title="Lrc Editor" Height="600" Width="800" Closing="Window_Closing" PreviewKeyDown="Window_PreviewKeyDown"
+           WindowStartupLocation="CenterScreen">
     <DockPanel>
         <Grid x:Name="MainGrid" Background="White" Height="Auto" DockPanel.Dock="Top">
             <Grid.RowDefinitions>
                 <!--菜单-->
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto" />
                 <!--歌曲名称-->
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto" />
                 <!--进度条-->
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto" />
                 <!--操作面板-->
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto" />
                 <!--歌词编辑面板-->
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Menu Height="28" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Top">
                 <MenuItem Header="文件">
-                    <MenuItem Header="选择音频" Name="SelectAudio" Click="SelectAudio_Click"/>
-                    <MenuItem Header="导入Lrc文件" Name="InputLrc" Click="InputLrc_Click"/>
-                    <Separator/>
-                    <MenuItem Header="保存" Name="Save" Click="Save_Click"/>
-                    <MenuItem Header="另存为..." Name="SaveAs" Click="SaveAs_Click" IsEnabled="False"/>
-                    <Separator/>
-                    <MenuItem Header="关闭全部" Name="CloseAll" Click="CloseAll_Click"/>
-                    <MenuItem Header="退出" Name="Exit" Click="Exit_Click"/>
+                    <MenuItem Header="选择音频" Name="SelectAudio" Click="SelectAudio_Click" />
+                    <MenuItem Header="导入Lrc文件" Name="InputLrc" Click="InputLrc_Click" />
+                    <Separator />
+                    <MenuItem Header="保存" Name="Save" Click="Save_Click" />
+                    <MenuItem Header="另存为..." Name="SaveAs" Click="SaveAs_Click" IsEnabled="False" />
+                    <Separator />
+                    <MenuItem Header="关闭全部" Name="CloseAll" Click="CloseAll_Click" />
+                    <MenuItem Header="退出" Name="Exit" Click="Exit_Click" />
                 </MenuItem>
-                <MenuItem Header="信息" Name="SetInfo" Click="SetInfo_Click"/>
-                <MenuItem Header="关于" Name="About" Click="About_Click"/>
+                <MenuItem Header="信息" Name="SetInfo" Click="SetInfo_Click" />
+                <MenuItem Header="关于" Name="About" Click="About_Click" />
             </Menu>
-            <TextBlock Grid.Row="1" Text="请先打开音频文件" HorizontalAlignment="Center" Name="AudioName"/>
-            <Slider Grid.Row="2" Margin="50,5,50,5" IsEnabled="False" Name="AudioProgress" Minimum="0" MouseDown="AudioProgress_MouseDown" MouseUp="AudioProgress_MouseUp"/>
+            <TextBlock Grid.Row="1" Text="请先打开音频文件" HorizontalAlignment="Center" Name="AudioName" />
+            <Slider Grid.Row="2" Margin="50,5,50,5" IsEnabled="False" Name="AudioProgress" Minimum="0"
+                    MouseDown="AudioProgress_MouseDown" MouseUp="AudioProgress_MouseUp"
+                    Background="LightGray" />
             <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
-                <Label Content="00:00.000" Margin="5,0,5,0" Style="{DynamicResource LabelPrimary}" ToolTip="当前播放位置" Name="Time"/>
-                <Button Content="&lt;&lt;" Margin="5,0,5,0" IsEnabled="False" Name="LLStep" Click="LLStep_Click" ToolTip="后退200毫秒"/>
-                <Button Content="&lt;" Margin="5,0,5,0" IsEnabled="False" Name="LStep" Click="LStep_Click" ToolTip="后退100毫秒"/>
-                <Button Content="Play" Margin="5,0,5,0" IsEnabled="False" Name="Pause" Click="Pause_Click"/>
-                <Button Content=">" Margin="5,0,5,0" IsEnabled="False" Name="RStep" Click="RStep_Click" ToolTip="前进100毫秒"/>
-                <Button Content=">>" Margin="5,0,5,0" IsEnabled="False" Name="RRStep" Click="RRStep_Click" ToolTip="前进200毫秒"/>
-                <Label Content="00:00.000" Margin="5,0,5,0" Style="{DynamicResource LabelPrimary}" ToolTip="总时长" Name="TotalTime"/>
+                <Label Content="00:00.000" Margin="5,0,5,0" Style="{DynamicResource LabelPrimary}" ToolTip="当前播放位置"
+                       Name="Time" />
+                <Button Content="&lt;&lt;" Margin="5,0,5,0" IsEnabled="False" Name="LlStep" Click="LLStep_Click"
+                        ToolTip="后退200毫秒" />
+                <Button Content="&lt;" Margin="5,0,5,0" IsEnabled="False" Name="LStep" Click="LStep_Click"
+                        ToolTip="后退100毫秒" />
+                <Button Content="Play" Margin="5,0,5,0" IsEnabled="False" Name="Pause" Click="Pause_Click" />
+                <Button Content=">" Margin="5,0,5,0" IsEnabled="False" Name="RStep" Click="RStep_Click"
+                        ToolTip="前进100毫秒" />
+                <Button Content=">>" Margin="5,0,5,0" IsEnabled="False" Name="RrStep" Click="RRStep_Click"
+                        ToolTip="前进200毫秒" />
+                <Label Content="00:00.000" Margin="5,0,5,0" Style="{DynamicResource LabelPrimary}" ToolTip="总时长"
+                       Name="TotalTime" />
             </StackPanel>
         </Grid>
         <Grid Background="White">
             <Grid.ColumnDefinitions>
                 <!--编辑器主界面-->
-                <ColumnDefinition/>
+                <ColumnDefinition />
                 <!--编辑器控制面板-->
-                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <DataGrid Grid.Column="0" Margin="5" Name="DataView" CanUserReorderColumns="True" AlternationCount="2">
-            </DataGrid>
-            <StackPanel Grid.Column="1" Orientation="Vertical" Width="50" Background="White" >
+            <Border Grid.Column="0" CornerRadius="5" Background="LightGray" BorderThickness="1" Margin="5px,0,0,5px">
+                <DataGrid
+                    Margin="5"
+                    Name="DataView"
+                    CanUserReorderColumns="True"
+                    Background="LightGray"
+                    AlternationCount="2">
+                </DataGrid>
+            </Border>
+            <StackPanel Grid.Column="1" Orientation="Vertical" Width="50" Background="White">
                 <Button Margin="5" Name="AddBtn" Click="AddBtn_Click">
-                    <Image Source="Resources/add.png"/>
+                    <Image Source="Resources/add.png" />
                 </Button>
                 <Button Margin="5" Name="RmBtn" Click="RmBtn_Click">
-                    <Image Source="Resources/rm.png"/>
+                    <Image Source="Resources/rm.png" />
                 </Button>
             </StackPanel>
         </Grid>

@@ -5,11 +5,11 @@ using System.Windows.Input;
 using MessageBox = HandyControl.Controls.MessageBox;
 using System.Windows.Forms;
 using Player = NAudioPlayer.NAudioPlayer;
-using Window = HandyControl.Controls.Window;
 using System.Data;
 using LrcLib.LrcData;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Versioning;
 using System.Text.RegularExpressions;
 using LrcLib.LrcFileKits;
 
@@ -18,17 +18,17 @@ namespace LrcEditor
     /// <summary>
     /// MainWindow.xaml 的交互逻辑
     /// </summary>
-    public partial class MainWindow : Window
+    [SupportedOSPlatform("windows")]
+    public partial class MainWindow
     {
-        private readonly Player _player = new Player();
-        private string _audioPath;
+        private readonly Player _player = new();
         private string _lrcPath;
 
         private readonly Timer _timer;
-        private bool _isChanging = false;
+        private bool _isChanging;
 
         private LrcHeader[] _lrcHeaders = new LrcHeader[5];
-        private readonly DataTable _dt = new DataTable();
+        private readonly DataTable _dt = new();
 
         public MainWindow()
         {
@@ -56,64 +56,60 @@ namespace LrcEditor
 
         private void About_Click(object sender, RoutedEventArgs e)
         {
-            AboutWindow window = new AboutWindow();
+            var window = new AboutWindow();
             window.ShowDialog();
         }
 
         private void SelectAudio_Click(object sender, RoutedEventArgs e)
         {
             // 选择文件
-            OpenFileDialog dlg = new OpenFileDialog();
-            dlg.Filter = "Mp3|*.mp3|Wave|*.wav|MIDI|*.midi|所有文件|*.*";
-            if (dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            var dlg = new OpenFileDialog();
+            dlg.Filter = "Mp3|*.mp3|Wave|*.wav|MIDI|*.midi|All|*.*";
+            if (dlg.ShowDialog() != System.Windows.Forms.DialogResult.OK) return;
+            try
             {
-                _audioPath = dlg.FileName;
-                try
-                {
-                    _player.Load(dlg.FileName);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message, "错误", MessageBoxButton.OK, MessageBoxImage.Error);
-                    // AudioName.Text = "请选择正确的音频文件";
-                    return;
-                }
-
-                AudioName.Text = dlg.FileName;
-                AudioProgress.Maximum = _player.TotalTime.TotalSeconds;
-                AudioProgress.Value = 0;
-                SetPanelUsable(true);
-                TotalTime.Content = Time2String(_player.TotalTime);
-                Pause.Content = "Play";
-                _timer.Start();
+                _player.Load(dlg.FileName);
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                // AudioName.Text = "请选择正确的音频文件";
+                return;
+            }
+
+            AudioName.Text = dlg.FileName;
+            AudioProgress.Maximum = _player.TotalTime.TotalSeconds;
+            AudioProgress.Value = 0;
+            SetPanelUsable(true);
+            TotalTime.Content = Time2String(_player.TotalTime);
+            Pause.Content = "Play";
+            _timer.Start();
         }
+
 
         private void InputLrc_Click(object sender, RoutedEventArgs e)
         {
             // 选择文件
-            OpenFileDialog dlg = new OpenFileDialog();
-            dlg.Filter = "Lrc|*.lrc|Text|*.txt|所有文件|*.*";
-            if (dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            var dlg = new OpenFileDialog();
+            dlg.Filter = "Lrc|*.lrc|Text|*.txt|All|*.*";
+            if (dlg.ShowDialog() != System.Windows.Forms.DialogResult.OK) return;
+            _lrcPath = dlg.FileName;
+            Title = "Lrc Editor - " + dlg.FileName;
+            var lrc = new LrcObject();
+            LrcFileKits.ReadFromFile(ref lrc, _lrcPath);
+            _lrcHeaders = lrc.LrcHeaders;
+
+            foreach (LrcLine line in lrc.LrcLines)
             {
-                _lrcPath = dlg.FileName;
-                Title = "Lrc Editor - " + dlg.FileName;
-                LrcObject Lrc = new LrcObject();
-                LrcFileKits.ReadFromFile(ref Lrc, _lrcPath);
-                _lrcHeaders = Lrc.LrcHeaders;
-
-                DataRow dr = null;
-                foreach (LrcLine line in Lrc.LrcLines)
-                {
-                    dr = _dt.NewRow();
-                    dr[0] = Time2String(line.Time);
-                    dr[1] = line.Text;
-                    _dt.Rows.Add(dr);
-                }
-
-                SetInfo.IsEnabled = true;
+                var dr = _dt.NewRow();
+                dr[0] = Time2String(line.Time);
+                dr[1] = line.Text;
+                _dt.Rows.Add(dr);
             }
+
+            SetInfo.IsEnabled = true;
         }
+
 
         private void Save_Click(object sender, RoutedEventArgs e)
         {
@@ -131,13 +127,12 @@ namespace LrcEditor
             AudioName.Text = "请先打开音频文件";
             _dt.Rows.Clear();
             _lrcPath = null;
-            _audioPath = null;
         }
+
 
         private void Exit_Click(object sender, RoutedEventArgs e)
         {
-            MessageBoxResult result;
-            result = MessageBox.Show("您确定要退出吗？", "提示", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            var result = MessageBox.Show("您确定要退出吗？", "提示", MessageBoxButton.YesNo, MessageBoxImage.Question);
             if (result == MessageBoxResult.Yes)
             {
                 // TODO: 这里做保存工作
@@ -151,7 +146,7 @@ namespace LrcEditor
 
         private void SetInfo_Click(object sender, RoutedEventArgs e)
         {
-            InfoWindow infoWindow = new InfoWindow(_lrcHeaders);
+            var infoWindow = new InfoWindow(_lrcHeaders);
             if ((bool)infoWindow.ShowDialog())
             {
                 _lrcHeaders = infoWindow.Headers;
@@ -215,8 +210,7 @@ namespace LrcEditor
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            MessageBoxResult result;
-            result = MessageBox.Show("您确定要退出吗？", "提示", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            var result = MessageBox.Show("您确定要退出吗？", "提示", MessageBoxButton.YesNo, MessageBoxImage.Question);
             if (result == MessageBoxResult.Yes)
             {
                 // TODO: 这里做保存工作
@@ -335,25 +329,29 @@ namespace LrcEditor
             }
         }
 
-        private string Time2String(TimeSpan time)
+        private static string Time2String(TimeSpan time)
         {
-            string min = time.Minutes.ToString();
+            var min = time.Minutes.ToString();
             if (min.Length == 1) min = "0" + min;
 
-            string sec = time.Seconds.ToString();
+            var sec = time.Seconds.ToString();
             if (sec.Length == 1) sec = "0" + sec;
 
-            string ms = time.Milliseconds.ToString();
-            if (ms.Length == 1) ms = "00" + ms;
-            else if (ms.Length == 2) ms = "0" + ms;
+            var ms = time.Milliseconds.ToString();
+            ms = ms.Length switch
+            {
+                1 => "00" + ms,
+                2 => "0" + ms,
+                _ => ms
+            };
 
             return min + ":" + sec + "." + ms;
         }
 
         private void SetPanelUsable(bool b)
         {
-            LLStep.IsEnabled = LStep.IsEnabled =
-                Pause.IsEnabled = RStep.IsEnabled = RRStep.IsEnabled = AudioProgress.IsEnabled = b;
+            LlStep.IsEnabled = LStep.IsEnabled =
+                Pause.IsEnabled = RStep.IsEnabled = RrStep.IsEnabled = AudioProgress.IsEnabled = b;
             if (!b && _player.IsPlaying)
             {
                 _player.Pause();
@@ -413,10 +411,10 @@ namespace LrcEditor
 
         private int CheckTimeFormat()
         {
-            int index = 0;
+            var index = 0;
             foreach (DataRow dr in _dt.Rows)
             {
-                if (!Regex.IsMatch((string)dr[0], @"(\d{ 1,2}\:\d{ 1,2}\.\d{ 2,3})| (\d{ 1,2}\:\d{ 1,2})"))
+                if (!MyRegex().IsMatch((string)dr[0]))
                 {
                     return index;
                 }
@@ -426,6 +424,7 @@ namespace LrcEditor
 
             return -1;
         }
+
 
         private void SaveFunc()
         {
@@ -446,7 +445,7 @@ namespace LrcEditor
             if (_lrcPath == null)
             {
                 var dlg = new SaveFileDialog();
-                dlg.Filter = "LRC文件|*.Lrc|文本文件|*.txt";
+                dlg.Filter = "LRC|*.Lrc|Plain text|*.txt";
                 if (dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
                     _lrcPath = dlg.FileName;
@@ -456,7 +455,7 @@ namespace LrcEditor
             }
             else
             {
-                int a = CheckTimeFormat();
+                var a = CheckTimeFormat();
                 //if (a >= 0)
                 //{
                 //    DataView.SelectedIndex = a;
@@ -470,6 +469,9 @@ namespace LrcEditor
                 //e}
             }
         }
+
+        [GeneratedRegex(@"(\d{ 1,2}\:\d{ 1,2}\.\d{ 2,3})| (\d{ 1,2}\:\d{ 1,2})")]
+        private static partial Regex MyRegex();
 
         #endregion
     }
